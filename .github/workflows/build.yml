@@ -16,3 +16,9 @@ jobs:
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
       - name: Build VST3 and Standalone
         run: cmake --build build --config Release --parallel 2
+      - name: Upload VST3 build
+        uses: actions/upload-artifact@v4
+        with:
+          name: R2R-ZX-VST3
+          path: build/R2R_ZX_artefacts/Release/VST3/R2R-ZX.vst3
+          if-no-files-found: error
