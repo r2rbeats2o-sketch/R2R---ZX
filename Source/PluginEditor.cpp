@@ -128,6 +128,25 @@ void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
     drawPanel ({ 374.0f, y, 350.0f, h }, "FILTER  /  STEREO", "Tone shaping and stereo placement", red);
     drawPanel ({ 740.0f, y, (float) getWidth() - 768.0f, h }, "AMP ENVELOPE", "Shape the note over time", cyan);
 
+    g.setColour (red);
+    g.setFont (juce::Font (juce::FontOptions (10.5f, juce::Font::bold)));
+    const int labelY = 250;
+    auto knobLabel = [&] (const juce::String& text, int x, int width)
+    {
+        g.drawText (text, x, labelY, width, 16, juce::Justification::centred);
+    };
+    knobLabel ("S&H RANGE", 50, 142);
+    knobLabel ("PORTAMENTO", 208, 142);
+    knobLabel ("CUTOFF", 394, 142);
+    knobLabel ("RESONANCE", 562, 142);
+    knobLabel ("STEREO SPREAD", 478, 142);
+    const int envX = 760;
+    const int envW = juce::jmax (126, (getWidth() - 790) / 2);
+    knobLabel ("ATTACK", envX, envW);
+    knobLabel ("DECAY", envX + envW + 12, envW);
+    knobLabel ("SUSTAIN", envX, envW);
+    knobLabel ("RELEASE", envX + envW + 12, envW);
+
     g.setColour (juce::Colour (0xff91a5ba));
     g.setFont (juce::Font (juce::FontOptions (10.0f)));
     g.drawText ("S&H pitch modulation follows the portamento state. Range is measured in cents.",
@@ -144,7 +163,7 @@ void R2RZXAudioProcessorEditor::resized()
     oscLabel.setBounds (w - 330, 118, 180, 20);
     oscillatorBox.setBounds (w - 330, 140, 290, 32);
 
-    const int top = 258;
+    const int top = 266;
     const int panel1x = 40, panel2x = 386, panel3x = 752;
     const int knobW = 142, knobH = 145;
     range.setBounds (panel1x + 10, top, knobW, knobH);
