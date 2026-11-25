@@ -10,9 +10,14 @@ public:
     void resized() override;
 private:
     R2RZXAudioProcessor& processor;
-    juce::Slider range, attack, decay, sustain, release;
-    juce::Label title, subtitle;
-    using Attachment = juce::AudioProcessorValueTreeState::SliderAttachment;
-    std::unique_ptr<Attachment> rangeAttachment, attackAttachment, decayAttachment, sustainAttachment, releaseAttachment;
+    juce::ComboBox presetBox, oscillatorBox;
+    juce::Slider range, portamento, attack, decay, sustain, release, cutoff, resonance, width;
+    juce::Label title, subtitle, presetLabel, oscLabel;
+    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    using ComboAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
+    std::unique_ptr<SliderAttachment> rangeAttachment, portamentoAttachment, attackAttachment, decayAttachment,
+        sustainAttachment, releaseAttachment, cutoffAttachment, resonanceAttachment, widthAttachment;
+    std::unique_ptr<ComboAttachment> oscillatorAttachment;
+    void setupSlider (juce::Slider&, const juce::String&);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (R2RZXAudioProcessorEditor)
 };
