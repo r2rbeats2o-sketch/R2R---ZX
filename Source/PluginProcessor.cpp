@@ -29,7 +29,7 @@ public:
         ampEnv.setSampleRate (getSampleRate()); ampEnv.setParameters (ep); ampEnv.noteOn();
         pitchEnv.setSampleRate (getSampleRate()); pitchEnv.setParameters (ep); pitchEnv.noteOn();
         shCounter = 0; shValue = random.nextFloat() * 2.0f - 1.0f;
-        phase = 0.0; filterState = 0.0f; active = true;
+        phase = 0.0; ic1eq = ic2eq = 0.0f; active = true;
     }
     void stopNote (float, bool allowTailOff) override
     {
@@ -70,7 +70,7 @@ public:
                 shValue = random.nextFloat() * 2.0f - 1.0f;
             }
             const float cents = glideSeconds > 0.0001 ? shValue * shRange->load() * modEnv : 0.0f;
-            const double hz = currentHz * std::pow (2.0, cents / 1200.0);
+            const double hz = currentHz * std::pow (2.0, (cents + pitchWheelSemitones * 100.0f + modWheel * shValue * shRange->load() * 0.25f) / 1200.0);
             const double inc = juce::MathConstants<double>::twoPi * hz / sr;
             phase += inc;
             if (phase >= juce::MathConstants<double>::twoPi) phase -= juce::MathConstants<double>::twoPi;
