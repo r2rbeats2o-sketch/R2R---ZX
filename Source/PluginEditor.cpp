@@ -130,22 +130,21 @@ void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (red);
     g.setFont (juce::Font (juce::FontOptions (10.5f, juce::Font::bold)));
-    const int labelY = 250;
-    auto knobLabel = [&] (const juce::String& text, int x, int width)
+    auto knobLabel = [&] (const juce::String& text, int x, int y, int width)
     {
-        g.drawText (text, x, labelY, width, 16, juce::Justification::centred);
+        g.drawText (text, x, y, width, 16, juce::Justification::centred);
     };
-    knobLabel ("S&H RANGE", 50, 142);
-    knobLabel ("PORTAMENTO", 208, 142);
-    knobLabel ("CUTOFF", 394, 142);
-    knobLabel ("RESONANCE", 562, 142);
-    knobLabel ("STEREO SPREAD", 478, 142);
+    knobLabel ("S&H RANGE", 50, 250, 142);
+    knobLabel ("PORTAMENTO", 208, 250, 142);
+    knobLabel ("CUTOFF", 394, 250, 142);
+    knobLabel ("RESONANCE", 562, 250, 142);
+    knobLabel ("STEREO SPREAD", 478, 408, 142);
     const int envX = 760;
     const int envW = juce::jmax (126, (getWidth() - 790) / 2);
-    knobLabel ("ATTACK", envX, envW);
-    knobLabel ("DECAY", envX + envW + 12, envW);
-    knobLabel ("SUSTAIN", envX, envW);
-    knobLabel ("RELEASE", envX + envW + 12, envW);
+    knobLabel ("ATTACK", envX, 250, envW);
+    knobLabel ("DECAY", envX + envW + 12, 250, envW);
+    knobLabel ("SUSTAIN", envX, 408, envW);
+    knobLabel ("RELEASE", envX + envW + 12, 408, envW);
 
     g.setColour (juce::Colour (0xff91a5ba));
     g.setFont (juce::Font (juce::FontOptions (10.0f)));
