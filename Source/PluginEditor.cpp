@@ -1,24 +1,35 @@
 #include "PluginEditor.h"
 
+namespace
+{
+const juce::Colour bg (0xff070b13), panel (0xff101927), panelEdge (0xff26384c);
+const juce::Colour cyan (0xff00e5ff), red (0xffff405d), white (0xffeaf4ff);
+}
+
 R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    setSize (940, 700);
-    title.setText ("R2R-ZX", juce::dontSendNotification);
-    title.setFont (juce::Font (juce::FontOptions (36.0f, juce::Font::bold)));
-    title.setColour (juce::Label::textColourId, juce::Colour (0xff00eaff));
+    setSize (1140, 730);
+    setResizable (true, true);
+    setResizeLimits (980, 650, 1500, 950);
+
+    title.setText ("R2R  /  ZX", juce::dontSendNotification);
+    title.setFont (juce::Font (juce::FontOptions (34.0f, juce::Font::bold)));
+    title.setColour (juce::Label::textColourId, cyan);
     addAndMakeVisible (title);
-    subtitle.setText ("POLYPHONIC SYNTH  /  PER-VOICE S&H PITCH ENGINE", juce::dontSendNotification);
-    subtitle.setColour (juce::Label::textColourId, juce::Colour (0xffff405d));
+
+    subtitle.setText ("POLYPHONIC SYNTH  •  RANDOM S&H PITCH ENGINE", juce::dontSendNotification);
+    subtitle.setFont (juce::Font (juce::FontOptions (12.0f, juce::Font::bold)));
+    subtitle.setColour (juce::Label::textColourId, red);
     addAndMakeVisible (subtitle);
 
-    presetLabel.setText ("FACTORY PRESET  /  100 SOUNDS", juce::dontSendNotification);
-    presetLabel.setColour (juce::Label::textColourId, juce::Colours::white);
+    presetLabel.setText ("FACTORY BANK  /  100 PRESETS", juce::dontSendNotification);
+    presetLabel.setColour (juce::Label::textColourId, white);
     addAndMakeVisible (presetLabel);
     for (int i = 0; i < R2RZXFactoryPresetCount; ++i)
     {
-        const auto& pinfo = R2RZXFactoryPresets[i];
-        presetBox.addItem (juce::String (i + 1).paddedLeft ('0', 3) + "  " + pinfo.name + "  [" + pinfo.category + "]", i + 1);
+        const auto& info = R2RZXFactoryPresets[i];
+        presetBox.addItem (juce::String (i + 1).paddedLeft ('0', 3) + "  " + info.name + "   /   " + info.category, i + 1);
     }
     presetBox.setSelectedId (1, juce::dontSendNotification);
     presetBox.onChange = [this]
@@ -27,20 +38,24 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
         if (id > 0) processor.selectPreset (id - 1);
         repaint();
     };
-    presetBox.setColour (juce::ComboBox::backgroundColourId, juce::Colour (0xff101a29));
-    presetBox.setColour (juce::ComboBox::textColourId, juce::Colours::white);
-    presetBox.setColour (juce::ComboBox::outlineColourId, juce::Colour (0xff00dff2));
+    presetBox.setColour (juce::ComboBox::backgroundColourId, panel);
+    presetBox.setColour (juce::ComboBox::textColourId, white);
+    presetBox.setColour (juce::ComboBox::outlineColourId, cyan);
+    presetBox.setColour (juce::ComboBox::arrowColourId, cyan);
     addAndMakeVisible (presetBox);
 
-    oscLabel.setText ("OSCILLATOR", juce::dontSendNotification);
-    oscLabel.setColour (juce::Label::textColourId, juce::Colours::white);
+    oscLabel.setText ("WAVEFORM", juce::dontSendNotification);
+    oscLabel.setColour (juce::Label::textColourId, white);
     addAndMakeVisible (oscLabel);
-    oscillatorBox.addItem ("Sine", 1); oscillatorBox.addItem ("Saw", 2);
-    oscillatorBox.addItem ("Pulse", 3); oscillatorBox.addItem ("Triangle", 4);
+    oscillatorBox.addItem ("Sine", 1);
+    oscillatorBox.addItem ("Saw", 2);
+    oscillatorBox.addItem ("Pulse", 3);
+    oscillatorBox.addItem ("Triangle", 4);
     oscillatorBox.addItem ("Digital", 5);
-    oscillatorBox.setColour (juce::ComboBox::backgroundColourId, juce::Colour (0xff101a29));
-    oscillatorBox.setColour (juce::ComboBox::textColourId, juce::Colours::white);
-    oscillatorBox.setColour (juce::ComboBox::outlineColourId, juce::Colour (0xffff405d));
+    oscillatorBox.setColour (juce::ComboBox::backgroundColourId, panel);
+    oscillatorBox.setColour (juce::ComboBox::textColourId, white);
+    oscillatorBox.setColour (juce::ComboBox::outlineColourId, red);
+    oscillatorBox.setColour (juce::ComboBox::arrowColourId, red);
     addAndMakeVisible (oscillatorBox);
 
     setupSlider (range, "S&H RANGE");
@@ -49,7 +64,7 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     setupSlider (decay, "DECAY");
     setupSlider (sustain, "SUSTAIN");
     setupSlider (release, "RELEASE");
-    setupSlider (cutoff, "FILTER CUTOFF");
+    setupSlider (cutoff, "CUTOFF");
     setupSlider (resonance, "RESONANCE");
     setupSlider (width, "STEREO WIDTH");
 
@@ -65,56 +80,83 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     widthAttachment = std::make_unique<SliderAttachment> (state, "WIDTH", width);
     oscillatorAttachment = std::make_unique<ComboAttachment> (state, "OSC_TYPE", oscillatorBox);
 }
+
 void R2RZXAudioProcessorEditor::setupSlider (juce::Slider& s, const juce::String& name)
 {
     s.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
-    s.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 78, 20);
-    s.setColour (juce::Slider::rotarySliderFillColourId, juce::Colour (0xff00dff2));
-    s.setColour (juce::Slider::rotarySliderOutlineColourId, juce::Colour (0xff25374a));
-    s.setColour (juce::Slider::thumbColourId, juce::Colour (0xffff405d));
-    s.setColour (juce::Slider::textBoxTextColourId, juce::Colours::white);
+    s.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 76, 19);
+    s.setColour (juce::Slider::rotarySliderFillColourId, cyan);
+    s.setColour (juce::Slider::rotarySliderOutlineColourId, juce::Colour (0xff34465b));
+    s.setColour (juce::Slider::thumbColourId, red);
+    s.setColour (juce::Slider::textBoxTextColourId, white);
+    s.setColour (juce::Slider::textBoxBackgroundColourId, juce::Colour (0xff0a111c));
+    s.setColour (juce::Slider::textBoxOutlineColourId, panelEdge);
     s.setName (name);
     addAndMakeVisible (s);
 }
+
 void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (juce::Colour (0xff050811));
-    auto b = getLocalBounds().toFloat().reduced (16.0f);
-    g.setColour (juce::Colour (0xff101a29)); g.fillRoundedRectangle (b, 18.0f);
-    g.setColour (juce::Colour (0xff00dff2)); g.drawRoundedRectangle (b, 18.0f, 1.5f);
-    g.setColour (juce::Colour (0x4439dfff));
-    for (int i = 1; i < 6; ++i) g.drawRoundedRectangle (b.reduced ((float) i * 2.0f), 18.0f, 0.5f);
-    g.setColour (juce::Colour (0xffff405d)); g.drawLine (28.0f, 112.0f, (float) getWidth() - 28.0f, 112.0f, 1.2f);
-    g.setColour (juce::Colour (0xff00dff2)); g.setFont (13.0f);
-    g.drawText ("INDEPENDENT RANDOM PITCH PER NOTE  |  S&H RANGE: 0–100 CENTS  |  24 VOICES", 30, 174, getWidth() - 60, 22, juce::Justification::centredLeft);
-    const juce::StringArray names { "S&H RANGE", "PORTAMENTO", "ATTACK", "DECAY", "SUSTAIN", "RELEASE", "FILTER CUTOFF", "RESONANCE", "STEREO WIDTH" };
-    g.setFont (juce::Font (juce::FontOptions (12.0f, juce::Font::bold)));
-    for (int i = 0; i < names.size(); ++i)
+    g.fillAll (bg);
+    auto bounds = getLocalBounds().toFloat().reduced (14.0f);
+    g.setColour (panel);
+    g.fillRoundedRectangle (bounds, 16.0f);
+    g.setColour (cyan.withAlpha (0.85f));
+    g.drawRoundedRectangle (bounds, 16.0f, 1.4f);
+
+    g.setColour (red);
+    g.fillRoundedRectangle (juce::Rectangle<float> (28.0f, 104.0f, (float) getWidth() - 56.0f, 2.0f), 1.0f);
+
+    auto drawPanel = [&] (juce::Rectangle<float> r, const juce::String& heading, const juce::String& detail, juce::Colour accent)
     {
-        const int col = i % 3, row = i / 3;
-        g.setColour (juce::Colour (0xffff405d));
-        g.drawText (names[i], 28 + col * 290, 203 + row * 148, 270, 18, juce::Justification::centred);
-    }
-    const int presetId = juce::jlimit (1, R2RZXFactoryPresetCount, presetBox.getSelectedId());
-    g.setColour (juce::Colours::white);
-    g.drawText ("LOADED: " + juce::String (R2RZXFactoryPresets[presetId - 1].category), 620, 169, 250, 18, juce::Justification::centredLeft);
-    g.setColour (juce::Colour (0xffff405d)); g.setFont (12.0f);
-    g.drawText ("R2R AUDIO LAB  •  FACTORY BANK: 100 PRESETS", 30, getHeight() - 24, getWidth() - 60, 16, juce::Justification::centred);
+        g.setColour (juce::Colour (0xff0b1320));
+        g.fillRoundedRectangle (r, 12.0f);
+        g.setColour (panelEdge);
+        g.drawRoundedRectangle (r, 12.0f, 1.0f);
+        g.setColour (accent);
+        g.fillRoundedRectangle (juce::Rectangle<float> (r.getX() + 14.0f, r.getY() + 14.0f, 3.0f, 22.0f), 1.5f);
+        g.setFont (juce::Font (juce::FontOptions (14.0f, juce::Font::bold)));
+        g.drawText (heading, (int) r.getX() + 26, (int) r.getY() + 12, (int) r.getWidth() - 40, 22, juce::Justification::centredLeft);
+        g.setColour (juce::Colour (0xff8194aa));
+        g.setFont (juce::Font (juce::FontOptions (10.5f)));
+        g.drawText (detail, (int) r.getX() + 16, (int) r.getY() + 38, (int) r.getWidth() - 32, 18, juce::Justification::centredLeft);
+    };
+
+    const float y = 190.0f;
+    const float h = (float) getHeight() - y - 44.0f;
+    drawPanel ({ 28.0f, y, 330.0f, h }, "OSCILLATOR  /  PITCH MOD", "Independent sample & hold per voice", cyan);
+    drawPanel ({ 374.0f, y, 350.0f, h }, "FILTER  /  STEREO", "Tone shaping and stereo placement", red);
+    drawPanel ({ 740.0f, y, (float) getWidth() - 768.0f, h }, "AMP ENVELOPE", "Shape the note over time", cyan);
+
+    g.setColour (juce::Colour (0xff91a5ba));
+    g.setFont (juce::Font (juce::FontOptions (10.0f)));
+    g.drawText ("S&H pitch modulation follows the portamento state. Range is measured in cents.",
+                44, getHeight() - 28, getWidth() - 88, 16, juce::Justification::centred);
 }
+
 void R2RZXAudioProcessorEditor::resized()
 {
-    title.setBounds (30, 20, 300, 50);
-    subtitle.setBounds (32, 72, 600, 24);
-    presetLabel.setBounds (30, 119, 240, 22);
-    presetBox.setBounds (30, 139, 560, 30);
-    oscLabel.setBounds (620, 119, 180, 22);
-    oscillatorBox.setBounds (620, 139, 250, 30);
+    const int w = getWidth();
+    title.setBounds (30, 22, 300, 48);
+    subtitle.setBounds (32, 68, 560, 22);
+    presetLabel.setBounds (30, 118, 250, 20);
+    presetBox.setBounds (30, 140, juce::jmin (570, w - 430), 32);
+    oscLabel.setBounds (w - 330, 118, 180, 20);
+    oscillatorBox.setBounds (w - 330, 140, 290, 32);
 
-    juce::Slider* controls[] = { &range, &portamento, &attack, &decay, &sustain, &release, &cutoff, &resonance, &width };
-    const int cellW = 270, cellH = 140, x0 = 28, y0 = 220, gapX = 20, gapY = 8;
-    for (int i = 0; i < 9; ++i)
-    {
-        const int col = i % 3, row = i / 3;
-        controls[i]->setBounds (x0 + col * (cellW + gapX), y0 + row * (cellH + gapY), cellW, cellH);
-    }
+    const int top = 258;
+    const int panel1x = 40, panel2x = 386, panel3x = 752;
+    const int knobW = 142, knobH = 145;
+    range.setBounds (panel1x + 10, top, knobW, knobH);
+    portamento.setBounds (panel1x + 168, top, knobW, knobH);
+
+    cutoff.setBounds (panel2x + 8, top, knobW, knobH);
+    resonance.setBounds (panel2x + 176, top, knobW, knobH);
+    width.setBounds (panel2x + 92, top + 158, knobW, knobH);
+
+    const int envW = juce::jmax (126, (w - 790) / 2);
+    attack.setBounds (panel3x + 8, top, envW, knobH);
+    decay.setBounds (panel3x + envW + 12, top, envW, knobH);
+    sustain.setBounds (panel3x + 8, top + 158, envW, knobH);
+    release.setBounds (panel3x + envW + 12, top + 158, envW, knobH);
 }
