@@ -86,7 +86,18 @@ void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
     for (int i = 1; i < 6; ++i) g.drawRoundedRectangle (b.reduced ((float) i * 2.0f), 18.0f, 0.5f);
     g.setColour (juce::Colour (0xffff405d)); g.drawLine (28.0f, 112.0f, (float) getWidth() - 28.0f, 112.0f, 1.2f);
     g.setColour (juce::Colour (0xff00dff2)); g.setFont (13.0f);
-    g.drawText ("INDEPENDENT RANDOM PITCH PER NOTE  |  S&H RANGE: 0–100 CENTS  |  24 VOICES", 30, 154, getWidth() - 60, 22, juce::Justification::centredLeft);
+    g.drawText ("INDEPENDENT RANDOM PITCH PER NOTE  |  S&H RANGE: 0–100 CENTS  |  24 VOICES", 30, 174, getWidth() - 60, 22, juce::Justification::centredLeft);
+    const juce::StringArray names { "S&H RANGE", "PORTAMENTO", "ATTACK", "DECAY", "SUSTAIN", "RELEASE", "FILTER CUTOFF", "RESONANCE", "STEREO WIDTH" };
+    g.setFont (juce::Font (juce::FontOptions (12.0f, juce::Font::bold)));
+    for (int i = 0; i < names.size(); ++i)
+    {
+        const int col = i % 3, row = i / 3;
+        g.setColour (juce::Colour (0xffff405d));
+        g.drawText (names[i], 28 + col * 290, 203 + row * 148, 270, 18, juce::Justification::centred);
+    }
+    const int presetId = juce::jlimit (1, R2RZXFactoryPresetCount, presetBox.getSelectedId());
+    g.setColour (juce::Colours::white);
+    g.drawText ("LOADED: " + juce::String (R2RZXFactoryPresets[presetId - 1].category), 620, 169, 250, 18, juce::Justification::centredLeft);
     g.setColour (juce::Colour (0xffff405d)); g.setFont (12.0f);
     g.drawText ("R2R AUDIO LAB  •  FACTORY BANK: 100 PRESETS", 30, getHeight() - 24, getWidth() - 60, 16, juce::Justification::centred);
 }
@@ -100,7 +111,7 @@ void R2RZXAudioProcessorEditor::resized()
     oscillatorBox.setBounds (620, 139, 250, 30);
 
     juce::Slider* controls[] = { &range, &portamento, &attack, &decay, &sustain, &release, &cutoff, &resonance, &width };
-    const int cellW = 270, cellH = 150, x0 = 28, y0 = 190, gapX = 20, gapY = 8;
+    const int cellW = 270, cellH = 140, x0 = 28, y0 = 220, gapX = 20, gapY = 8;
     for (int i = 0; i < 9; ++i)
     {
         const int col = i % 3, row = i / 3;
