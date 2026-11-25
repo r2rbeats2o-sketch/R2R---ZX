@@ -1,7 +1,7 @@
 {
   "bank": "R2R-ZX Factory Bank",
   "version": "0.1.0",
-  "note": "100 factory preset definitions. Preset recall integration is part of the next implementation stage.",
+  "note": "100 factory presets are integrated into the JUCE preset browser and mapped to the synth parameter engine.",
   "presets": [
     {
       "id": 1,
