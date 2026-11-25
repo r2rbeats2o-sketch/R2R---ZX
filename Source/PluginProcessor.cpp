@@ -36,8 +36,14 @@ public:
         if (allowTailOff) { ampEnv.noteOff(); pitchEnv.noteOff(); }
         else { ampEnv.reset(); pitchEnv.reset(); clearCurrentNote(); active = false; }
     }
-    void pitchWheelMoved (int) override {}
-    void controllerMoved (int, int) override {}
+    void pitchWheelMoved (int value) override
+    {
+        pitchWheelSemitones = ((float) value - 8192.0f) / 8192.0f * 2.0f;
+    }
+    void controllerMoved (int controller, int value) override
+    {
+        if (controller == 1) modWheel = (float) value / 127.0f;
+    }
 
     void renderNextBlock (juce::AudioBuffer<float>& out, int start, int count) override
     {
@@ -84,10 +90,18 @@ public:
             else sample = 0.62f * std::sin ((float) phase) + 0.25f * std::sin ((float) phase * 2.0f) + 0.13f * std::sin ((float) phase * 3.0f);
 
             const float fc = juce::jlimit (30.0f, (float) (sr * 0.45), cutoff->load());
-            const float alpha = 1.0f - std::exp (-juce::MathConstants<float>::twoPi * fc / (float) sr);
-            filterState += alpha * (sample - filterState);
-            const float res = resonance->load();
-            sample = filterState * (1.0f + res * 0.35f);
+            const float g = std::tan (juce::MathConstants<float>::pi * fc / (float) sr);
+            const float q = 0.5f + resonance->load() * 9.5f;
+            const float k = 1.0f / q;
+            const float a1 = 1.0f / (1.0f + g * (g + k));
+            const float a2 = g * a1;
+            const float a3 = g * a2;
+            const float v3 = sample - ic2eq;
+            const float v1 = a1 * ic1eq + a2 * v3;
+            const float v2 = ic2eq + a2 * ic1eq + a3 * v3;
+            ic1eq = 2.0f * v1 - ic1eq;
+            ic2eq = 2.0f * v2 - ic2eq;
+            sample = v2;
             const float s = sample * level * amp * 0.22f;
             l[start + i] += s * gainL;
             if (r != nullptr) r[start + i] += s * gainR;
@@ -100,7 +114,8 @@ private:
     juce::ADSR ampEnv, pitchEnv;
     juce::Random random;
     double phase = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
-    float level = 0.0f, shValue = 0.0f, filterState = 0.0f;
+    float level = 0.0f, shValue = 0.0f, ic1eq = 0.0f, ic2eq = 0.0f;
+    float pitchWheelSemitones = 0.0f, modWheel = 0.0f;
     int shCounter = 0;
     bool active = false;
 };
