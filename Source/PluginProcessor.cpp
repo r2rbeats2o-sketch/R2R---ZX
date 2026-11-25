@@ -15,7 +15,7 @@ public:
         oscType = raw ("OSC_TYPE"); cutoff = raw ("CUTOFF"); resonance = raw ("RESONANCE"); width = raw ("WIDTH");
     }
 
-    bool canPlaySound (juce::SynthesiserSound* sound) override { return dynamic_cast<R2RZXSound*> (sound) != nullptr; }
+    bool canPlaySound (juce::SynthesiserSound* sound) override { return sound != nullptr; }
     void startNote (int midiNote, float velocity, juce::SynthesiserSound*, int) override
     {
         const double nextHz = juce::MidiMessage::getMidiNoteInHertz (midiNote);
@@ -24,7 +24,8 @@ public:
         glideSeconds = portamento->load();
         glideStep = glideSeconds > 0.0001 ? (targetHz - currentHz) / juce::jmax (1.0, glideSeconds * getSampleRate()) : 0.0;
         level = velocity;
-        juce::ADSR::Parameters ep (attack->load(), decay->load(), sustain->load(), release->load());
+        juce::ADSR::Parameters ep;
+        ep.attack = attack->load(); ep.decay = decay->load(); ep.sustain = sustain->load(); ep.release = release->load();
         ampEnv.setSampleRate (getSampleRate()); ampEnv.setParameters (ep); ampEnv.noteOn();
         pitchEnv.setSampleRate (getSampleRate()); pitchEnv.setParameters (ep); pitchEnv.noteOn();
         shCounter = 0; shValue = random.nextFloat() * 2.0f - 1.0f;
@@ -164,7 +165,7 @@ void R2RZXAudioProcessor::releaseResources() {}
 void R2RZXAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi)
 {
     juce::ScopedNoDenormals noDenormals;
-    for (int ch = getTotalNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch) buffer.clear (ch, 0, buffer.getNumSamples());
+    buffer.clear();
     synth.renderNextBlock (buffer, midi, 0, buffer.getNumSamples());
 }
 juce::AudioProcessorEditor* R2RZXAudioProcessor::createEditor() { return new R2RZXAudioProcessorEditor (*this); }
