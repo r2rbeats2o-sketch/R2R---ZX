@@ -159,18 +159,46 @@ void R2RZXLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int wi
     g.setColour (red);
     g.strokePath (active, juce::PathStrokeType (3.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 
-    juce::Path pointer;
-    pointer.startNewSubPath (cx, cy - diameter * 0.12f);
-    pointer.lineTo (cx, cy - diameter * 0.36f);
-    g.setColour (juce::Colour (0xfff8dfe2));
-    g.strokePath (pointer, juce::PathStrokeType (3.2f, juce::PathStrokeType::rounded));
     const float tipX = cx + std::sin (angle) * diameter * 0.37f;
     const float tipY = cy - std::cos (angle) * diameter * 0.37f;
+    juce::Path pointer;
+    pointer.startNewSubPath (cx + std::sin (angle) * diameter * 0.12f,
+                             cy - std::cos (angle) * diameter * 0.12f);
+    pointer.lineTo (tipX, tipY);
+    g.setColour (juce::Colour (0xfff8dfe2));
+    g.strokePath (pointer, juce::PathStrokeType (3.2f, juce::PathStrokeType::rounded));
     g.setColour (red);
     g.fillEllipse (tipX - 2.0f, tipY - 2.0f, 4.0f, 4.0f);
     g.setColour (juce::Colours::white.withAlpha (0.07f));
     g.fillEllipse (face.getX() + diameter * 0.18f, face.getY() + diameter * 0.12f,
                    diameter * 0.20f, diameter * 0.075f);
+}
+
+void R2RZXLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, bool isButtonDown,
+                                               int buttonX, int buttonY, int buttonW, int buttonH,
+                                               juce::ComboBox&)
+{
+    auto bounds = juce::Rectangle<float> (0.0f, 0.0f, (float) width, (float) height);
+    g.setColour (juce::Colours::black.withAlpha (0.75f));
+    g.fillRoundedRectangle (bounds.translated (0.0f, 2.0f), 6.0f);
+    juce::ColourGradient fill (juce::Colour (0xff303137), 0.0f, 0.0f,
+                               juce::Colour (0xff101115), 0.0f, (float) height, false);
+    g.setGradientFill (fill);
+    g.fillRoundedRectangle (bounds.reduced (0.5f), 6.0f);
+    g.setColour (juce::Colour (0xff64616a));
+    g.drawRoundedRectangle (bounds.reduced (0.5f), 6.0f, 1.0f);
+    g.setColour (red.withAlpha (0.85f));
+    g.fillRoundedRectangle ({ 5.0f, 6.0f, 2.0f, (float) height - 12.0f }, 1.0f);
+
+    const float cx = (float) buttonX + (float) buttonW * 0.5f;
+    const float cy = (float) buttonY + (float) buttonH * 0.5f;
+    juce::Path arrow;
+    arrow.startNewSubPath (cx - 4.5f, cy - 2.0f);
+    arrow.lineTo (cx, cy + 2.5f);
+    arrow.lineTo (cx + 4.5f, cy - 2.0f);
+    g.setColour (isButtonDown ? juce::Colours::white : red);
+    g.strokePath (arrow, juce::PathStrokeType (2.0f, juce::PathStrokeType::curved,
+                                               juce::PathStrokeType::rounded));
 }
 
 R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
