@@ -95,11 +95,11 @@ public:
                 const float tri = 1.0f - 4.0f * std::abs (ph - 0.5f);
                 const float digital = 0.62f * sine + 0.25f * std::sin ((float) phs * 2.0f) + 0.13f * std::sin ((float) phs * 3.0f);
                 const float frames[5] = { sine, saw, pulse, tri, digital };
-                const float frame = juce::jlimit (0.0f, 4.0f, pos * 4.0f);
+                const float frame = juce::jlimit (0.0f, 4.0f, pos * 4.0f + (float) shape * 0.12f);
                 const int a = (int) frame, b = juce::jmin (4, a + 1);
                 const float blend = frame - (float) a;
                 const float scanned = frames[a] + (frames[b] - frames[a]) * blend;
-                return shape == 0 ? scanned : (shape == 1 ? saw : shape == 2 ? pulse : shape == 3 ? tri : digital);
+                return scanned;
             };
             const float sampleA = tableSample (phase, position);
             const float sampleB = tableSample (phaseB, juce::jlimit (0.0f, 1.0f, position + 0.18f));
