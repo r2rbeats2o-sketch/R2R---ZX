@@ -4,6 +4,86 @@
 
 namespace
 {
+float basicR2RWave (int shape, double phase)
+{
+    const float p = (float) (phase / juce::MathConstants<double>::twoPi);
+    const float sine = std::sin ((float) phase);
+    const float saw = 2.0f * p - 1.0f;
+    const float pulse = p < 0.5f ? 1.0f : -1.0f;
+    const float triangle = 1.0f - 4.0f * std::abs (p - 0.5f);
+    const float digital = 0.58f * sine + 0.27f * std::sin ((float) phase * 2.0f)
+                        + 0.15f * std::sin ((float) phase * 3.0f);
+    switch (shape)
+    {
+        case 0: return sine;
+        case 1: return saw;
+        case 2: return pulse;
+        case 3: return triangle;
+        default: return digital;
+    }
+}
+
+// Five original, continuously morphable table families. WT position changes
+// harmonic content; oscillator shape remains the starting character.
+float renderR2RTable (double phase, int shape, int bank, float position)
+{
+    const float p = (float) phase;
+    const float pos = juce::jlimit (0.0f, 1.0f, position);
+    const float base = basicR2RWave (shape, phase);
+
+    if (bank == 0)
+    {
+        const float next = basicR2RWave ((shape + 1) % 5, phase);
+        return base + (next - base) * pos;
+    }
+
+    if (bank == 1) // Formant
+    {
+        const float formant = std::sin (p)
+            + (0.32f + 0.36f * pos) * std::sin (2.0f * p + 0.18f)
+            + (0.48f - 0.22f * pos) * std::sin (3.0f * p)
+            + (0.12f + 0.24f * pos) * std::sin (4.0f * p + 0.31f)
+            + 0.10f * std::sin (5.0f * p);
+        return 0.22f * base + 0.78f * formant / 1.75f;
+    }
+
+    if (bank == 2) // Digital Glass
+    {
+        const float glass = std::sin (p)
+            + 0.42f * std::sin (2.01f * p)
+            + (0.30f + 0.18f * pos) * std::sin (3.97f * p + 0.2f)
+            + 0.17f * std::sin (6.13f * p)
+            + 0.08f * std::sin (8.31f * p + pos);
+        return 0.18f * base + 0.82f * glass / 1.95f;
+    }
+
+    if (bank == 3) // Vocal Grain
+    {
+        const float centre = 2.0f + pos * 5.0f;
+        float grains = 0.0f, weightSum = 0.0f;
+        for (int harmonic = 1; harmonic <= 8; ++harmonic)
+        {
+            const float distance = std::abs ((float) harmonic - centre);
+            const float weight = (0.12f + 0.88f / (1.0f + distance * 2.0f)) / (float) harmonic;
+            grains += weight * std::sin (p * (float) harmonic);
+            weightSum += weight;
+        }
+        return 0.18f * base + 0.82f * grains / juce::jmax (0.01f, weightSum);
+    }
+
+    // Harmonic Sweep: position progressively opens the upper partials.
+    float harmonics = 0.0f, weightSum = 0.0f;
+    const float spectralTilt = 0.55f + pos * 1.35f;
+    for (int harmonic = 1; harmonic <= 9; ++harmonic)
+    {
+        const float n = (float) harmonic;
+        const float weight = 1.0f / std::pow (n, spectralTilt);
+        harmonics += weight * std::sin (p * n);
+        weightSum += weight;
+    }
+    return 0.14f * base + 0.86f * harmonics / juce::jmax (0.01f, weightSum);
+}
+
 class R2RZXVoice final : public juce::SynthesiserVoice
 {
 public:
@@ -13,7 +93,7 @@ public:
         shRange = raw ("SH_RANGE"); portamento = raw ("PORTAMENTO");
         attack = raw ("ATTACK"); decay = raw ("DECAY"); sustain = raw ("SUSTAIN"); release = raw ("RELEASE");
         oscType = raw ("OSC_TYPE"); cutoff = raw ("CUTOFF"); resonance = raw ("RESONANCE"); width = raw ("WIDTH");
-        wtPosition = raw ("WT_POS"); oscMix = raw ("OSC_MIX"); detune = raw ("DETUNE");
+        wtPosition = raw ("WT_POS"); oscMix = raw ("OSC_MIX"); detune = raw ("DETUNE"); wavetableBank = raw ("WT_BANK");
     }
 
     bool canPlaySound (juce::SynthesiserSound* sound) override { return sound != nullptr; }
@@ -84,25 +164,12 @@ public:
             phase += incA; phaseB += incB;
             if (phase >= juce::MathConstants<double>::twoPi) phase -= juce::MathConstants<double>::twoPi;
             if (phaseB >= juce::MathConstants<double>::twoPi) phaseB -= juce::MathConstants<double>::twoPi;
-            const int shape = (int) oscType->load();
+            const int shape = juce::jlimit (0, 4, (int) oscType->load());
+            const int bank = juce::jlimit (0, 4, (int) wavetableBank->load());
             const float position = wtPosition->load();
-            auto tableSample = [&] (double phs, float pos)
-            {
-                const float ph = (float) (phs / juce::MathConstants<double>::twoPi);
-                const float sine = std::sin ((float) phs);
-                const float saw = 2.0f * ph - 1.0f;
-                const float pulse = ph < 0.5f ? 1.0f : -1.0f;
-                const float tri = 1.0f - 4.0f * std::abs (ph - 0.5f);
-                const float digital = 0.62f * sine + 0.25f * std::sin ((float) phs * 2.0f) + 0.13f * std::sin ((float) phs * 3.0f);
-                const float frames[5] = { sine, saw, pulse, tri, digital };
-                const float frame = juce::jlimit (0.0f, 4.0f, pos * 4.0f + (float) shape * 0.12f);
-                const int a = (int) frame, b = juce::jmin (4, a + 1);
-                const float blend = frame - (float) a;
-                const float scanned = frames[a] + (frames[b] - frames[a]) * blend;
-                return scanned;
-            };
-            const float sampleA = tableSample (phase, position);
-            const float sampleB = tableSample (phaseB, juce::jlimit (0.0f, 1.0f, position + 0.18f));
+            const float sampleA = renderR2RTable (phase, shape, bank, position);
+            const float sampleB = renderR2RTable (phaseB, shape, bank,
+                                                   juce::jlimit (0.0f, 1.0f, position + 0.18f));
             const float mix = juce::jlimit (0.0f, 1.0f, oscMix->load());
             float sample = sampleA * (1.0f - mix) + sampleB * mix;
 
@@ -128,7 +195,7 @@ private:
     std::atomic<float>* shRange{}; std::atomic<float>* portamento{};
     std::atomic<float>* attack{}; std::atomic<float>* decay{}; std::atomic<float>* sustain{}; std::atomic<float>* release{};
     std::atomic<float>* oscType{}; std::atomic<float>* cutoff{}; std::atomic<float>* resonance{}; std::atomic<float>* width{};
-    std::atomic<float>* wtPosition{}; std::atomic<float>* oscMix{}; std::atomic<float>* detune{};
+    std::atomic<float>* wtPosition{}; std::atomic<float>* oscMix{}; std::atomic<float>* detune{}; std::atomic<float>* wavetableBank{};
     juce::ADSR ampEnv, pitchEnv;
     juce::Random random;
     double phase = 0.0, phaseB = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
@@ -162,6 +229,7 @@ R2RZXAudioProcessor::APVTS::ParameterLayout R2RZXAudioProcessor::createParameter
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("WT_POS", "Wavetable Position", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("OSC_MIX", "Oscillator B Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.35f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("DETUNE", "Oscillator B Detune", juce::NormalisableRange<float> (0.0f, 30.0f), 7.0f));
+    p.push_back (std::make_unique<juce::AudioParameterChoice> ("WT_BANK", "Wavetable Bank", juce::StringArray { "Basic Shapes", "Formant", "Digital Glass", "Vocal Grain", "Harmonic Sweep" }, 0));
     return { p.begin(), p.end() };
 }
 
@@ -190,6 +258,13 @@ void R2RZXAudioProcessor::selectPreset (int index)
     setParameter ("SUSTAIN", p.sustain); setParameter ("RELEASE", p.release);
     setParameter ("SH_RANGE", p.shRangeCents); setParameter ("PORTAMENTO", p.portamentoSeconds);
     setParameter ("WIDTH", p.stereoWidth);
+    const juce::String bank (p.wavetable);
+    const int bankIndex = bank == "Basic Shapes" ? 0 : bank == "Formant" ? 1
+                        : bank == "Digital Glass" ? 2 : bank == "Vocal Grain" ? 3 : 4;
+    setParameter ("WT_BANK", (float) bankIndex);
+    setParameter ("WT_POS", p.wavetablePosition);
+    setParameter ("OSC_MIX", p.oscillatorMix);
+    setParameter ("DETUNE", p.detuneCents);
 }
 void R2RZXAudioProcessor::setCurrentProgram (int index) { selectPreset (index); }
 const juce::String R2RZXAudioProcessor::getProgramName (int index)
