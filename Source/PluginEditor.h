@@ -19,14 +19,14 @@ public:
 private:
     R2RZXAudioProcessor& processor;
     R2RZXLookAndFeel r2rLookAndFeel;
-    juce::ComboBox presetBox, oscillatorBox;
+    juce::ComboBox presetBox, oscillatorBox, wavetableBox;
     juce::Slider range, portamento, attack, decay, sustain, release, cutoff, resonance, width, wtPosition, oscMix, detune;
-    juce::Label title, subtitle, presetLabel, oscLabel;
+    juce::Label title, subtitle, presetLabel, oscLabel, wavetableLabel;
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     using ComboAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
     std::unique_ptr<SliderAttachment> rangeAttachment, portamentoAttachment, attackAttachment, decayAttachment,
         sustainAttachment, releaseAttachment, cutoffAttachment, resonanceAttachment, widthAttachment, wtPositionAttachment, oscMixAttachment, detuneAttachment;
-    std::unique_ptr<ComboAttachment> oscillatorAttachment;
+    std::unique_ptr<ComboAttachment> oscillatorAttachment, wavetableAttachment;
     void setupSlider (juce::Slider&, const juce::String&);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (R2RZXAudioProcessorEditor)
 };
