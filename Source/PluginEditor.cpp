@@ -259,6 +259,22 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     oscillatorBox.setColour (juce::ComboBox::focusedOutlineColourId, red);
     addAndMakeVisible (oscillatorBox);
 
+    wavetableLabel.setText ("WAVETABLE BANK", juce::dontSendNotification);
+    wavetableLabel.setFont (juce::Font (juce::FontOptions (10.0f, juce::Font::bold)));
+    wavetableLabel.setColour (juce::Label::textColourId, muted);
+    addAndMakeVisible (wavetableLabel);
+    wavetableBox.addItem ("Basic Shapes", 1);
+    wavetableBox.addItem ("Formant", 2);
+    wavetableBox.addItem ("Digital Glass", 3);
+    wavetableBox.addItem ("Vocal Grain", 4);
+    wavetableBox.addItem ("Harmonic Sweep", 5);
+    wavetableBox.setColour (juce::ComboBox::backgroundColourId, juce::Colour (0xff111216));
+    wavetableBox.setColour (juce::ComboBox::textColourId, white);
+    wavetableBox.setColour (juce::ComboBox::outlineColourId, redDeep);
+    wavetableBox.setColour (juce::ComboBox::arrowColourId, red);
+    wavetableBox.setColour (juce::ComboBox::focusedOutlineColourId, red);
+    addAndMakeVisible (wavetableBox);
+
     setupSlider (range, "S&H RANGE");
     setupSlider (portamento, "PORTAMENTO");
     setupSlider (attack, "ATTACK");
@@ -286,9 +302,11 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     oscMixAttachment = std::make_unique<SliderAttachment> (state, "OSC_MIX", oscMix);
     detuneAttachment = std::make_unique<SliderAttachment> (state, "DETUNE", detune);
     oscillatorAttachment = std::make_unique<ComboAttachment> (state, "OSC_TYPE", oscillatorBox);
+    wavetableAttachment = std::make_unique<ComboAttachment> (state, "WT_BANK", wavetableBox);
 
     auto repaintOnEdit = [this] { repaint(); };
     wtPosition.onValueChange = repaintOnEdit;
+    wavetableBox.onChange = repaintOnEdit;
     oscMix.onValueChange = repaintOnEdit;
     detune.onValueChange = repaintOnEdit;
     cutoff.onValueChange = repaintOnEdit;
@@ -418,9 +436,11 @@ void R2RZXAudioProcessorEditor::resized()
     title.setBounds (30, 19, 300, 48);
     subtitle.setBounds (32, 65, 650, 20);
     presetLabel.setBounds (30, 108, 310, 18);
-    presetBox.setBounds (30, 130, juce::jmax (420, getWidth() - 440), 38);
-    oscLabel.setBounds (getWidth() - 370, 108, 330, 18);
-    oscillatorBox.setBounds (getWidth() - 370, 130, 330, 38);
+    presetBox.setBounds (30, 130, 520, 38);
+    oscLabel.setBounds (570, 108, 165, 18);
+    oscillatorBox.setBounds (570, 130, 165, 38);
+    wavetableLabel.setBounds (755, 108, 210, 18);
+    wavetableBox.setBounds (755, 130, 210, 38);
 
     const float oscKnobW = juce::jmin (116.0f, (leftW - 58.0f) / 3.0f);
     const float oscY = topY + 165.0f;
