@@ -2,14 +2,22 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+class R2RZXLookAndFeel final : public juce::LookAndFeel_V4
+{
+public:
+    void drawRotarySlider (juce::Graphics&, int, int, int, int, float, float, float, juce::Slider&) override;
+};
+
 class R2RZXAudioProcessorEditor final : public juce::AudioProcessorEditor
 {
 public:
     explicit R2RZXAudioProcessorEditor (R2RZXAudioProcessor&);
+    ~R2RZXAudioProcessorEditor() override;
     void paint (juce::Graphics&) override;
     void resized() override;
 private:
     R2RZXAudioProcessor& processor;
+    R2RZXLookAndFeel r2rLookAndFeel;
     juce::ComboBox presetBox, oscillatorBox;
     juce::Slider range, portamento, attack, decay, sustain, release, cutoff, resonance, width, wtPosition, oscMix, detune;
     juce::Label title, subtitle, presetLabel, oscLabel;
