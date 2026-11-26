@@ -94,6 +94,8 @@ public:
         attack = raw ("ATTACK"); decay = raw ("DECAY"); sustain = raw ("SUSTAIN"); release = raw ("RELEASE");
         oscType = raw ("OSC_TYPE"); cutoff = raw ("CUTOFF"); resonance = raw ("RESONANCE"); width = raw ("WIDTH");
         wtPosition = raw ("WT_POS"); oscMix = raw ("OSC_MIX"); detune = raw ("DETUNE"); wavetableBank = raw ("WT_BANK");
+        unisonVoices = raw ("UNISON"); unisonDetune = raw ("UNI_DETUNE");
+        subMix = raw ("SUB_MIX"); drive = raw ("DRIVE");
     }
 
     bool canPlaySound (juce::SynthesiserSound* sound) override { return sound != nullptr; }
@@ -110,7 +112,13 @@ public:
         ampEnv.setSampleRate (getSampleRate()); ampEnv.setParameters (ep); ampEnv.noteOn();
         pitchEnv.setSampleRate (getSampleRate()); pitchEnv.setParameters (ep); pitchEnv.noteOn();
         shCounter = 0; shValue = random.nextFloat() * 2.0f - 1.0f;
-        phase = phaseB = 0.0; ic1eq = ic2eq = 0.0f; active = true;
+        for (int u = 0; u < 6; ++u)
+        {
+            phaseA[u] = phaseB[u] = 0.0;
+            ic1eq[u] = ic2eq[u] = 0.0f;
+        }
+        phaseSub = 0.0;
+        active = true;
     }
     void stopNote (float, bool allowTailOff) override
     {
@@ -133,9 +141,7 @@ public:
         auto* r = out.getNumChannels() > 1 ? out.getWritePointer (1) : nullptr;
         const double sr = juce::jmax (1.0, getSampleRate());
         const float maxWidth = juce::jlimit (0.0f, 1.0f, width->load());
-        const float pan = ((getCurrentlyPlayingNote() % 12) / 11.0f - 0.5f) * maxWidth;
-        const float gainL = std::sqrt (0.5f * (1.0f - pan));
-        const float gainR = std::sqrt (0.5f * (1.0f + pan));
+        const float basePan = ((getCurrentlyPlayingNote() % 12) / 11.0f - 0.5f) * maxWidth;
         for (int i = 0; i < count; ++i)
         {
             const float amp = ampEnv.getNextSample();
@@ -158,21 +164,15 @@ public:
             }
             const float cents = glideSeconds > 0.0001 ? shValue * shRange->load() * modEnv : 0.0f;
             const double hz = currentHz * std::pow (2.0, (cents + pitchWheelSemitones * 100.0f + modWheel * shValue * shRange->load() * 0.25f) / 1200.0);
-            const float detuneCents = detune->load();
-            const double incA = juce::MathConstants<double>::twoPi * hz / sr;
-            const double incB = juce::MathConstants<double>::twoPi * hz * std::pow (2.0, detuneCents / 1200.0) / sr;
-            phase += incA; phaseB += incB;
-            if (phase >= juce::MathConstants<double>::twoPi) phase -= juce::MathConstants<double>::twoPi;
-            if (phaseB >= juce::MathConstants<double>::twoPi) phaseB -= juce::MathConstants<double>::twoPi;
+
             const int shape = juce::jlimit (0, 4, (int) oscType->load());
             const int bank = juce::jlimit (0, 4, (int) wavetableBank->load());
             const float position = wtPosition->load();
-            const float sampleA = renderR2RTable (phase, shape, bank, position);
-            const float sampleB = renderR2RTable (phaseB, shape, bank,
-                                                   juce::jlimit (0.0f, 1.0f, position + 0.18f));
             const float mix = juce::jlimit (0.0f, 1.0f, oscMix->load());
-            float sample = sampleA * (1.0f - mix) + sampleB * mix;
-
+            const int voiceCount = juce::jlimit (1, 6, (int) unisonVoices->load());
+            const float stackDetune = juce::jlimit (0.0f, 45.0f, unisonDetune->load());
+            const float oscBDetune = juce::jlimit (0.0f, 30.0f, detune->load());
+            const float driveAmount = juce::jlimit (0.0f, 1.0f, drive->load());
             const float fc = juce::jlimit (30.0f, (float) (sr * 0.45), cutoff->load());
             const float g = std::tan (juce::MathConstants<float>::pi * fc / (float) sr);
             const float q = 0.5f + resonance->load() * 9.5f;
@@ -180,15 +180,59 @@ public:
             const float a1 = 1.0f / (1.0f + g * (g + k));
             const float a2 = g * a1;
             const float a3 = g * a2;
-            const float v3 = sample - ic2eq;
-            const float v1 = a1 * ic1eq + a2 * v3;
-            const float v2 = ic2eq + a2 * ic1eq + a3 * v3;
-            ic1eq = 2.0f * v1 - ic1eq;
-            ic2eq = 2.0f * v2 - ic2eq;
-            sample = v2;
-            const float s = sample * level * amp * 0.22f;
-            l[start + i] += s * gainL;
-            if (r != nullptr) r[start + i] += s * gainR;
+
+            float sumL = 0.0f, sumR = 0.0f;
+            for (int u = 0; u < voiceCount; ++u)
+            {
+                const float spread = voiceCount > 1
+                    ? ((float) u / (float) (voiceCount - 1)) * 2.0f - 1.0f : 0.0f;
+                const float laneDetune = spread * stackDetune;
+                const double hzA = hz * std::pow (2.0, laneDetune / 1200.0);
+                const double hzB = hz * std::pow (2.0, (laneDetune + oscBDetune) / 1200.0);
+                phaseA[u] += juce::MathConstants<double>::twoPi * hzA / sr;
+                phaseB[u] += juce::MathConstants<double>::twoPi * hzB / sr;
+                if (phaseA[u] >= juce::MathConstants<double>::twoPi) phaseA[u] -= juce::MathConstants<double>::twoPi;
+                if (phaseB[u] >= juce::MathConstants<double>::twoPi) phaseB[u] -= juce::MathConstants<double>::twoPi;
+
+                const float sampleA = renderR2RTable (phaseA[u], shape, bank, position);
+                const float sampleB = renderR2RTable (phaseB[u], shape, bank,
+                    juce::jlimit (0.0f, 1.0f, position + 0.18f));
+                float sample = sampleA * (1.0f - mix) + sampleB * mix;
+
+                const float driveGain = 1.0f + driveAmount * 7.0f;
+                sample = std::tanh (sample * driveGain) / std::tanh (driveGain);
+
+                const float v3 = sample - ic2eq[u];
+                const float v1 = a1 * ic1eq[u] + a2 * v3;
+                const float v2 = ic2eq[u] + a2 * ic1eq[u] + a3 * v3;
+                ic1eq[u] = 2.0f * v1 - ic1eq[u];
+                ic2eq[u] = 2.0f * v2 - ic2eq[u];
+                sample = v2;
+
+                // Spread unison lanes across the stereo field without changing
+                // the centre pitch or the MIDI-note pan position.
+                const float lanePan = juce::jlimit (-0.95f, 0.95f, basePan + spread * maxWidth * 0.42f);
+                const float gainL = std::sqrt (0.5f * (1.0f - lanePan));
+                const float gainR = std::sqrt (0.5f * (1.0f + lanePan));
+                sumL += sample * gainL / (float) voiceCount;
+                sumR += sample * gainR / (float) voiceCount;
+            }
+
+            const float subAmount = juce::jlimit (0.0f, 1.0f, subMix->load());
+            if (subAmount > 0.0001f)
+            {
+                phaseSub += juce::MathConstants<double>::twoPi * (hz * 0.5) / sr;
+                if (phaseSub >= juce::MathConstants<double>::twoPi) phaseSub -= juce::MathConstants<double>::twoPi;
+                const float sub = std::sin ((float) phaseSub) * subAmount * 0.38f;
+                const float baseLeft = std::sqrt (0.5f * (1.0f - basePan));
+                const float baseRight = std::sqrt (0.5f * (1.0f + basePan));
+                sumL += sub * baseLeft;
+                sumR += sub * baseRight;
+            }
+
+            const float outputGain = level * amp * 0.22f;
+            l[start + i] += sumL * outputGain;
+            if (r != nullptr) r[start + i] += sumR * outputGain;
         }
     }
 private:
@@ -196,10 +240,12 @@ private:
     std::atomic<float>* attack{}; std::atomic<float>* decay{}; std::atomic<float>* sustain{}; std::atomic<float>* release{};
     std::atomic<float>* oscType{}; std::atomic<float>* cutoff{}; std::atomic<float>* resonance{}; std::atomic<float>* width{};
     std::atomic<float>* wtPosition{}; std::atomic<float>* oscMix{}; std::atomic<float>* detune{}; std::atomic<float>* wavetableBank{};
+    std::atomic<float>* unisonVoices{}; std::atomic<float>* unisonDetune{}; std::atomic<float>* subMix{}; std::atomic<float>* drive{};
     juce::ADSR ampEnv, pitchEnv;
     juce::Random random;
-    double phase = 0.0, phaseB = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
-    float level = 0.0f, shValue = 0.0f, ic1eq = 0.0f, ic2eq = 0.0f;
+    double phaseA[6]{}, phaseB[6]{}, phaseSub = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
+    float ic1eq[6]{}, ic2eq[6]{};
+    float level = 0.0f, shValue = 0.0f;
     float pitchWheelSemitones = 0.0f, modWheel = 0.0f;
     int shCounter = 0;
     bool active = false;
@@ -230,6 +276,10 @@ R2RZXAudioProcessor::APVTS::ParameterLayout R2RZXAudioProcessor::createParameter
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("OSC_MIX", "Oscillator B Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.35f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("DETUNE", "Oscillator B Detune", juce::NormalisableRange<float> (0.0f, 30.0f), 7.0f));
     p.push_back (std::make_unique<juce::AudioParameterChoice> ("WT_BANK", "Wavetable Bank", juce::StringArray { "Basic Shapes", "Formant", "Digital Glass", "Vocal Grain", "Harmonic Sweep" }, 0));
+    p.push_back (std::make_unique<juce::AudioParameterInt> ("UNISON", "Unison Voices", 1, 6, 1));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("UNI_DETUNE", "Unison Detune", juce::NormalisableRange<float> (0.0f, 45.0f, 0.1f), 8.0f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("SUB_MIX", "Sub Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("DRIVE", "Drive", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
     return { p.begin(), p.end() };
 }
 
@@ -265,6 +315,10 @@ void R2RZXAudioProcessor::selectPreset (int index)
     setParameter ("WT_POS", p.wavetablePosition);
     setParameter ("OSC_MIX", p.oscillatorMix);
     setParameter ("DETUNE", p.detuneCents);
+    setParameter ("UNISON", (float) p.unisonVoices);
+    setParameter ("UNI_DETUNE", p.unisonDetuneCents);
+    setParameter ("SUB_MIX", p.subMix);
+    setParameter ("DRIVE", p.drive);
 }
 void R2RZXAudioProcessor::setCurrentProgram (int index) { selectPreset (index); }
 const juce::String R2RZXAudioProcessor::getProgramName (int index)
