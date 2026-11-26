@@ -95,7 +95,7 @@ public:
         oscType = raw ("OSC_TYPE"); cutoff = raw ("CUTOFF"); resonance = raw ("RESONANCE"); width = raw ("WIDTH");
         wtPosition = raw ("WT_POS"); oscMix = raw ("OSC_MIX"); detune = raw ("DETUNE"); wavetableBank = raw ("WT_BANK");
         unisonVoices = raw ("UNISON"); unisonDetune = raw ("UNI_DETUNE");
-        subMix = raw ("SUB_MIX"); drive = raw ("DRIVE");
+        subMix = raw ("SUB_MIX"); drive = raw ("DRIVE"); filterEnvAmount = raw ("FILTER_ENV");
     }
 
     bool canPlaySound (juce::SynthesiserSound* sound) override { return sound != nullptr; }
@@ -111,6 +111,7 @@ public:
         ep.attack = attack->load(); ep.decay = decay->load(); ep.sustain = sustain->load(); ep.release = release->load();
         ampEnv.setSampleRate (getSampleRate()); ampEnv.setParameters (ep); ampEnv.noteOn();
         pitchEnv.setSampleRate (getSampleRate()); pitchEnv.setParameters (ep); pitchEnv.noteOn();
+        filterEnv.setSampleRate (getSampleRate()); filterEnv.setParameters (ep); filterEnv.noteOn();
         shCounter = 0; shValue = random.nextFloat() * 2.0f - 1.0f;
         for (int u = 0; u < 6; ++u)
         {
@@ -122,8 +123,8 @@ public:
     }
     void stopNote (float, bool allowTailOff) override
     {
-        if (allowTailOff) { ampEnv.noteOff(); pitchEnv.noteOff(); }
-        else { ampEnv.reset(); pitchEnv.reset(); clearCurrentNote(); active = false; }
+        if (allowTailOff) { ampEnv.noteOff(); pitchEnv.noteOff(); filterEnv.noteOff(); }
+        else { ampEnv.reset(); pitchEnv.reset(); filterEnv.reset(); clearCurrentNote(); active = false; }
     }
     void pitchWheelMoved (int value) override
     {
@@ -146,6 +147,7 @@ public:
         {
             const float amp = ampEnv.getNextSample();
             const float modEnv = pitchEnv.getNextSample();
+            const float filterMod = filterEnv.getNextSample();
             if (! ampEnv.isActive()) { active = false; clearCurrentNote(); break; }
 
             if (glideSeconds > 0.0001 && std::abs (targetHz - currentHz) > 0.001)
@@ -173,7 +175,9 @@ public:
             const float stackDetune = juce::jlimit (0.0f, 45.0f, unisonDetune->load());
             const float oscBDetune = juce::jlimit (0.0f, 30.0f, detune->load());
             const float driveAmount = juce::jlimit (0.0f, 1.0f, drive->load());
-            const float fc = juce::jlimit (30.0f, (float) (sr * 0.45), cutoff->load());
+            const float envAmount = juce::jlimit (-1.0f, 1.0f, filterEnvAmount->load());
+            const float envelopeCutoff = cutoff->load() * std::pow (2.0f, envAmount * 4.0f * filterMod);
+            const float fc = juce::jlimit (30.0f, (float) (sr * 0.45), envelopeCutoff);
             const float g = std::tan (juce::MathConstants<float>::pi * fc / (float) sr);
             const float q = 0.5f + resonance->load() * 9.5f;
             const float k = 1.0f / q;
@@ -241,7 +245,8 @@ private:
     std::atomic<float>* oscType{}; std::atomic<float>* cutoff{}; std::atomic<float>* resonance{}; std::atomic<float>* width{};
     std::atomic<float>* wtPosition{}; std::atomic<float>* oscMix{}; std::atomic<float>* detune{}; std::atomic<float>* wavetableBank{};
     std::atomic<float>* unisonVoices{}; std::atomic<float>* unisonDetune{}; std::atomic<float>* subMix{}; std::atomic<float>* drive{};
-    juce::ADSR ampEnv, pitchEnv;
+    std::atomic<float>* filterEnvAmount{};
+    juce::ADSR ampEnv, pitchEnv, filterEnv;
     juce::Random random;
     double phaseA[6]{}, phaseB[6]{}, phaseSub = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
     float ic1eq[6]{}, ic2eq[6]{};
@@ -280,6 +285,7 @@ R2RZXAudioProcessor::APVTS::ParameterLayout R2RZXAudioProcessor::createParameter
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("UNI_DETUNE", "Unison Detune", juce::NormalisableRange<float> (0.0f, 45.0f, 0.1f), 8.0f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("SUB_MIX", "Sub Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("DRIVE", "Drive", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("FILTER_ENV", "Filter Envelope Amount", juce::NormalisableRange<float> (-1.0f, 1.0f), 0.0f));
     return { p.begin(), p.end() };
 }
 
@@ -319,6 +325,7 @@ void R2RZXAudioProcessor::selectPreset (int index)
     setParameter ("UNI_DETUNE", p.unisonDetuneCents);
     setParameter ("SUB_MIX", p.subMix);
     setParameter ("DRIVE", p.drive);
+    setParameter ("FILTER_ENV", p.filterEnvAmount);
 }
 void R2RZXAudioProcessor::setCurrentProgram (int index) { selectPreset (index); }
 const juce::String R2RZXAudioProcessor::getProgramName (int index)
