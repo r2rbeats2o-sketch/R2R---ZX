@@ -1,11 +1,11 @@
 {
   "bank": "R2R-ZX Factory Bank",
-  "version": "1.0.0",
-  "note": "100 individually tuned R2R-ZX patches with category-specific oscillator, wavetable, envelope, filter, stereo and modulation settings.",
+  "version": "1.1.0",
+  "note": "Original R2R-ZX professional factory bank: curated patch identities with unison stacks, filter envelopes, sub layers, drive, dual oscillators and five wavetable families.",
   "presets": [
     {
       "id": 1,
-      "name": "Sub Reactor",
+      "name": "BS - Deep Sub",
       "category": "Bass",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -20,11 +20,16 @@
       "stereoWidth": 0.03,
       "wavetablePosition": 0.02,
       "oscillatorMix": 0.02,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0.92,
+      "drive": 0,
+      "filterEnvAmount": 0.04
     },
     {
       "id": 2,
-      "name": "Neon Pulse",
+      "name": "BS - Soft Rubber",
       "category": "Bass",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -39,11 +44,16 @@
       "stereoWidth": 0.08,
       "wavetablePosition": 0.14,
       "oscillatorMix": 0.12,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 3,
+      "subMix": 0.62,
+      "drive": 0.05,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 3,
-      "name": "Deep Circuit",
+      "name": "BS - Neon Reese",
       "category": "Bass",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -58,11 +68,16 @@
       "stereoWidth": 0.18,
       "wavetablePosition": 0.38,
       "oscillatorMix": 0.42,
-      "detuneCents": 11
+      "detuneCents": 11,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 14,
+      "subMix": 0.34,
+      "drive": 0.42,
+      "filterEnvAmount": 0.56
     },
     {
       "id": 4,
-      "name": "Rubber Core",
+      "name": "BS - Acid Motion",
       "category": "Bass",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -77,11 +92,16 @@
       "stereoWidth": 0.06,
       "wavetablePosition": 0.58,
       "oscillatorMix": 0.22,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 12,
+      "subMix": 0.25,
+      "drive": 0.68,
+      "filterEnvAmount": 0.78
     },
     {
       "id": 5,
-      "name": "Acid Vector",
+      "name": "BS - Formant Bite",
       "category": "Bass",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -96,11 +116,16 @@
       "stereoWidth": 0.2,
       "wavetablePosition": 0.31,
       "oscillatorMix": 0.26,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 8,
+      "subMix": 0.15,
+      "drive": 0.45,
+      "filterEnvAmount": 0.9
     },
     {
       "id": 6,
-      "name": "Titan Drive",
+      "name": "BS - Digital Growl",
       "category": "Bass",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -115,11 +140,16 @@
       "stereoWidth": 0.12,
       "wavetablePosition": 0.81,
       "oscillatorMix": 0.62,
-      "detuneCents": 18
+      "detuneCents": 18,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 20,
+      "subMix": 0.1,
+      "drive": 0.6,
+      "filterEnvAmount": 0.65
     },
     {
       "id": 7,
-      "name": "Low Orbit",
+      "name": "BS - Rolling Sub",
       "category": "Bass",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -134,11 +164,16 @@
       "stereoWidth": 0.06,
       "wavetablePosition": 0.18,
       "oscillatorMix": 0.1,
-      "detuneCents": 1
+      "detuneCents": 1,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0.8,
+      "drive": 0.1,
+      "filterEnvAmount": 0.15
     },
     {
       "id": 8,
-      "name": "Dark Current",
+      "name": "BS - Dark Reese",
       "category": "Bass",
       "oscillator": "saw",
       "wavetable": "Vocal Grain",
@@ -153,11 +188,16 @@
       "stereoWidth": 0.24,
       "wavetablePosition": 0.66,
       "oscillatorMix": 0.55,
-      "detuneCents": 14
+      "detuneCents": 14,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 24,
+      "subMix": 0.08,
+      "drive": 0.5,
+      "filterEnvAmount": 0.55
     },
     {
       "id": 9,
-      "name": "Voltage Drop",
+      "name": "BS - Voltage Bass",
       "category": "Bass",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -172,11 +212,16 @@
       "stereoWidth": 0.1,
       "wavetablePosition": 0.94,
       "oscillatorMix": 0.48,
-      "detuneCents": 22
+      "detuneCents": 22,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 19,
+      "subMix": 0.35,
+      "drive": 0.42,
+      "filterEnvAmount": 0.4
     },
     {
       "id": 10,
-      "name": "Iron Sub",
+      "name": "BS - Pure Sine",
       "category": "Bass",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -191,11 +236,16 @@
       "stereoWidth": 0.02,
       "wavetablePosition": 0,
       "oscillatorMix": 0,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 1,
+      "drive": 0,
+      "filterEnvAmount": 0
     },
     {
       "id": 11,
-      "name": "Night Crusher",
+      "name": "BS - Mid Punch",
       "category": "Bass",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -210,11 +260,16 @@
       "stereoWidth": 0.04,
       "wavetablePosition": 0.45,
       "oscillatorMix": 0.3,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 9,
+      "subMix": 0.35,
+      "drive": 0.25,
+      "filterEnvAmount": 0.72
     },
     {
       "id": 12,
-      "name": "Mono Beast",
+      "name": "BS - Slap Drive",
       "category": "Bass",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -229,11 +284,16 @@
       "stereoWidth": 0.2,
       "wavetablePosition": 0.28,
       "oscillatorMix": 0.68,
-      "detuneCents": 16
+      "detuneCents": 16,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 15,
+      "subMix": 0.45,
+      "drive": 0.4,
+      "filterEnvAmount": 0.62
     },
     {
       "id": 13,
-      "name": "Pulse Engine",
+      "name": "BS - Pulse Runner",
       "category": "Bass",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -248,11 +308,16 @@
       "stereoWidth": 0.1,
       "wavetablePosition": 0.1,
       "oscillatorMix": 0.22,
-      "detuneCents": 3
+      "detuneCents": 3,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 5,
+      "subMix": 0.55,
+      "drive": 0.34,
+      "filterEnvAmount": 0.35
     },
     {
       "id": 14,
-      "name": "Skyline Lead",
+      "name": "LD - Trance Anthem",
       "category": "Lead",
       "oscillator": "saw",
       "wavetable": "Basic Shapes",
@@ -267,11 +332,16 @@
       "stereoWidth": 0.48,
       "wavetablePosition": 0.28,
       "oscillatorMix": 0.48,
-      "detuneCents": 12
+      "detuneCents": 12,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 25,
+      "subMix": 0,
+      "drive": 0.3,
+      "filterEnvAmount": 0.55
     },
     {
       "id": 15,
-      "name": "Neon Razor",
+      "name": "LD - Wide Supersaw",
       "category": "Lead",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -286,11 +356,16 @@
       "stereoWidth": 0.56,
       "wavetablePosition": 0.52,
       "oscillatorMix": 0.62,
-      "detuneCents": 18
+      "detuneCents": 18,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 31,
+      "subMix": 0,
+      "drive": 0.42,
+      "filterEnvAmount": 0.6
     },
     {
       "id": 16,
-      "name": "Solar Arc",
+      "name": "LD - Neon Hook",
       "category": "Lead",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -305,11 +380,16 @@
       "stereoWidth": 0.34,
       "wavetablePosition": 0.42,
       "oscillatorMix": 0.28,
-      "detuneCents": 5
+      "detuneCents": 5,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 20,
+      "subMix": 0,
+      "drive": 0.25,
+      "filterEnvAmount": 0.44
     },
     {
       "id": 17,
-      "name": "Laser Bloom",
+      "name": "LD - Detuned Glide",
       "category": "Lead",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -324,11 +404,16 @@
       "stereoWidth": 0.62,
       "wavetablePosition": 0.76,
       "oscillatorMix": 0.42,
-      "detuneCents": 9
+      "detuneCents": 9,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0.18,
+      "filterEnvAmount": 0.85
     },
     {
       "id": 18,
-      "name": "Hyperion",
+      "name": "LD - Festival Lead",
       "category": "Lead",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -343,11 +428,16 @@
       "stereoWidth": 0.68,
       "wavetablePosition": 0.12,
       "oscillatorMix": 0.7,
-      "detuneCents": 22
+      "detuneCents": 22,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 28,
+      "subMix": 0,
+      "drive": 0.38,
+      "filterEnvAmount": 0.48
     },
     {
       "id": 19,
-      "name": "Glass Runner",
+      "name": "LD - Bright Saw",
       "category": "Lead",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -362,11 +452,16 @@
       "stereoWidth": 0.38,
       "wavetablePosition": 0.34,
       "oscillatorMix": 0.24,
-      "detuneCents": 3
+      "detuneCents": 3,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0.35,
+      "filterEnvAmount": 0.36
     },
     {
       "id": 20,
-      "name": "Voltage Crown",
+      "name": "LD - Pulse Razor",
       "category": "Lead",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -381,11 +476,16 @@
       "stereoWidth": 0.28,
       "wavetablePosition": 0.63,
       "oscillatorMix": 0.36,
-      "detuneCents": 7
+      "detuneCents": 7,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 12,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.7
     },
     {
       "id": 21,
-      "name": "Nova Speak",
+      "name": "LD - Vocal Edge",
       "category": "Lead",
       "oscillator": "saw",
       "wavetable": "Vocal Grain",
@@ -400,11 +500,16 @@
       "stereoWidth": 0.72,
       "wavetablePosition": 0.89,
       "oscillatorMix": 0.58,
-      "detuneCents": 15
+      "detuneCents": 15,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 26,
+      "subMix": 0,
+      "drive": 0.3,
+      "filterEnvAmount": 0.42
     },
     {
       "id": 22,
-      "name": "Cyber Flame",
+      "name": "LD - Digital Fire",
       "category": "Lead",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -419,11 +524,16 @@
       "stereoWidth": 0.58,
       "wavetablePosition": 0.48,
       "oscillatorMix": 0.82,
-      "detuneCents": 24
+      "detuneCents": 24,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 19,
+      "subMix": 0,
+      "drive": 0.15,
+      "filterEnvAmount": 0.5
     },
     {
       "id": 23,
-      "name": "Prism Edge",
+      "name": "LD - Clean Mono",
       "category": "Lead",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -438,11 +548,16 @@
       "stereoWidth": 0.26,
       "wavetablePosition": 0.06,
       "oscillatorMix": 0.16,
-      "detuneCents": 1
+      "detuneCents": 1,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 9,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.25
     },
     {
       "id": 24,
-      "name": "Starlight",
+      "name": "LD - Power Stack",
       "category": "Lead",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -457,11 +572,16 @@
       "stereoWidth": 0.44,
       "wavetablePosition": 0.71,
       "oscillatorMix": 0.52,
-      "detuneCents": 13
+      "detuneCents": 13,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 30,
+      "subMix": 0,
+      "drive": 0.55,
+      "filterEnvAmount": 0.8
     },
     {
       "id": 25,
-      "name": "Redline Lead",
+      "name": "LD - Acid Skyline",
       "category": "Lead",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -476,11 +596,16 @@
       "stereoWidth": 0.32,
       "wavetablePosition": 0.24,
       "oscillatorMix": 0.38,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 16,
+      "subMix": 0,
+      "drive": 0.22,
+      "filterEnvAmount": 0.6
     },
     {
       "id": 26,
-      "name": "Quantum Call",
+      "name": "LD - Massive Fifth",
       "category": "Lead",
       "oscillator": "triangle",
       "wavetable": "Vocal Grain",
@@ -495,11 +620,16 @@
       "stereoWidth": 0.52,
       "wavetablePosition": 0.96,
       "oscillatorMix": 0.3,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 34,
+      "subMix": 0,
+      "drive": 0.4,
+      "filterEnvAmount": 0.65
     },
     {
       "id": 27,
-      "name": "Aurora Field",
+      "name": "PD - Warm Air",
       "category": "Pad",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -514,11 +644,16 @@
       "stereoWidth": 0.88,
       "wavetablePosition": 0.12,
       "oscillatorMix": 0.34,
-      "detuneCents": 7
+      "detuneCents": 7,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 24,
+      "subMix": 0,
+      "drive": 0.06,
+      "filterEnvAmount": 0.1
     },
     {
       "id": 28,
-      "name": "Velvet Horizon",
+      "name": "PD - Velvet Cloud",
       "category": "Pad",
       "oscillator": "triangle",
       "wavetable": "Harmonic Sweep",
@@ -533,11 +668,16 @@
       "stereoWidth": 0.92,
       "wavetablePosition": 0.28,
       "oscillatorMix": 0.48,
-      "detuneCents": 11
+      "detuneCents": 11,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 29,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 29,
-      "name": "Cloud Temple",
+      "name": "PD - Vocal Atmos",
       "category": "Pad",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -552,11 +692,16 @@
       "stereoWidth": 0.86,
       "wavetablePosition": 0.54,
       "oscillatorMix": 0.52,
-      "detuneCents": 15
+      "detuneCents": 15,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 20,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.18
     },
     {
       "id": 30,
-      "name": "Crystal Drift",
+      "name": "PD - Wide Motion",
       "category": "Pad",
       "oscillator": "saw",
       "wavetable": "Basic Shapes",
@@ -571,11 +716,16 @@
       "stereoWidth": 0.9,
       "wavetablePosition": 0.66,
       "oscillatorMix": 0.38,
-      "detuneCents": 9
+      "detuneCents": 9,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 32,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 31,
-      "name": "Deep Atmos",
+      "name": "PD - Slow Sunrise",
       "category": "Pad",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -590,11 +740,16 @@
       "stereoWidth": 0.96,
       "wavetablePosition": 0.08,
       "oscillatorMix": 0.22,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 35,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.04
     },
     {
       "id": 32,
-      "name": "Blue Cathedral",
+      "name": "PD - Glass Horizon",
       "category": "Pad",
       "oscillator": "wavetable",
       "wavetable": "Harmonic Sweep",
@@ -609,11 +764,16 @@
       "stereoWidth": 0.84,
       "wavetablePosition": 0.82,
       "oscillatorMix": 0.68,
-      "detuneCents": 19
+      "detuneCents": 19,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 22,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.14
     },
     {
       "id": 33,
-      "name": "Soft Nebula",
+      "name": "PD - Soft Halo",
       "category": "Pad",
       "oscillator": "triangle",
       "wavetable": "Formant",
@@ -628,11 +788,16 @@
       "stereoWidth": 0.8,
       "wavetablePosition": 0.42,
       "oscillatorMix": 0.3,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 26,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.08
     },
     {
       "id": 34,
-      "name": "Dream Circuit",
+      "name": "PD - Dream Sweep",
       "category": "Pad",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -647,11 +812,16 @@
       "stereoWidth": 0.94,
       "wavetablePosition": 0.74,
       "oscillatorMix": 0.58,
-      "detuneCents": 13
+      "detuneCents": 13,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 31,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.16
     },
     {
       "id": 35,
-      "name": "Polar Lights",
+      "name": "PD - Infinite Bloom",
       "category": "Pad",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -666,11 +836,16 @@
       "stereoWidth": 0.98,
       "wavetablePosition": 0.92,
       "oscillatorMix": 0.72,
-      "detuneCents": 23
+      "detuneCents": 23,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 38,
+      "subMix": 0,
+      "drive": 0.06,
+      "filterEnvAmount": 0.2
     },
     {
       "id": 36,
-      "name": "Infinite Bloom",
+      "name": "PD - Dark Cinema",
       "category": "Pad",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -685,11 +860,16 @@
       "stereoWidth": 0.92,
       "wavetablePosition": 0.18,
       "oscillatorMix": 0.18,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.05
     },
     {
       "id": 37,
-      "name": "Moon Garden",
+      "name": "PD - Frozen Choir",
       "category": "Pad",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -704,11 +884,16 @@
       "stereoWidth": 0.82,
       "wavetablePosition": 0.62,
       "oscillatorMix": 0.44,
-      "detuneCents": 12
+      "detuneCents": 12,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 34,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 38,
-      "name": "Warm Expanse",
+      "name": "PD - Golden Hour",
       "category": "Pad",
       "oscillator": "triangle",
       "wavetable": "Harmonic Sweep",
@@ -723,11 +908,16 @@
       "stereoWidth": 0.96,
       "wavetablePosition": 0.36,
       "oscillatorMix": 0.62,
-      "detuneCents": 17
+      "detuneCents": 17,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 25,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.16
     },
     {
       "id": 39,
-      "name": "Ethereal Grid",
+      "name": "PD - Deep Space",
       "category": "Pad",
       "oscillator": "saw",
       "wavetable": "Basic Shapes",
@@ -742,11 +932,16 @@
       "stereoWidth": 0.88,
       "wavetablePosition": 0.86,
       "oscillatorMix": 0.4,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 36,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.06
     },
     {
       "id": 40,
-      "name": "Pixel Pluck",
+      "name": "PL - Trance Bell",
       "category": "Pluck",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -761,11 +956,16 @@
       "stereoWidth": 0.24,
       "wavetablePosition": 0.04,
       "oscillatorMix": 0.1,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 6,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.82
     },
     {
       "id": 41,
-      "name": "Crystal Tap",
+      "name": "PL - Short Spark",
       "category": "Pluck",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -780,11 +980,16 @@
       "stereoWidth": 0.3,
       "wavetablePosition": 0.16,
       "oscillatorMix": 0.18,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 4,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.74
     },
     {
       "id": 42,
-      "name": "Digital Rain",
+      "name": "PL - Neon Pluck",
       "category": "Pluck",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -799,11 +1004,16 @@
       "stereoWidth": 0.34,
       "wavetablePosition": 0.38,
       "oscillatorMix": 0.36,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 10,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.66
     },
     {
       "id": 43,
-      "name": "Glass Bell",
+      "name": "PL - Glass Drop",
       "category": "Pluck",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -818,11 +1028,16 @@
       "stereoWidth": 0.2,
       "wavetablePosition": 0.56,
       "oscillatorMix": 0.24,
-      "detuneCents": 5
+      "detuneCents": 5,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 8,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.9
     },
     {
       "id": 44,
-      "name": "Short Circuit",
+      "name": "PL - Crystal Arp",
       "category": "Pluck",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -837,11 +1052,16 @@
       "stereoWidth": 0.42,
       "wavetablePosition": 0.72,
       "oscillatorMix": 0.48,
-      "detuneCents": 12
+      "detuneCents": 12,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 12,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.72
     },
     {
       "id": 45,
-      "name": "Amber Drop",
+      "name": "PL - Soft Mallet",
       "category": "Pluck",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -856,11 +1076,16 @@
       "stereoWidth": 0.26,
       "wavetablePosition": 0.22,
       "oscillatorMix": 0.12,
-      "detuneCents": 1
+      "detuneCents": 1,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 5,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.58
     },
     {
       "id": 46,
-      "name": "Tiny Sparks",
+      "name": "PL - Bright Pick",
       "category": "Pluck",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -875,11 +1100,16 @@
       "stereoWidth": 0.32,
       "wavetablePosition": 0.48,
       "oscillatorMix": 0.2,
-      "detuneCents": 3
+      "detuneCents": 3,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 7,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.62
     },
     {
       "id": 47,
-      "name": "Prism Keys",
+      "name": "PL - Razor Tick",
       "category": "Pluck",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -894,11 +1124,16 @@
       "stereoWidth": 0.38,
       "wavetablePosition": 0.86,
       "oscillatorMix": 0.58,
-      "detuneCents": 16
+      "detuneCents": 16,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 14,
+      "subMix": 0,
+      "drive": 0.16,
+      "filterEnvAmount": 0.78
     },
     {
       "id": 48,
-      "name": "Echo Pebble",
+      "name": "PL - Vocal Pluck",
       "category": "Pluck",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -913,11 +1148,16 @@
       "stereoWidth": 0.48,
       "wavetablePosition": 0.94,
       "oscillatorMix": 0.42,
-      "detuneCents": 10
+      "detuneCents": 10,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 13,
+      "subMix": 0,
+      "drive": 0.06,
+      "filterEnvAmount": 0.88
     },
     {
       "id": 49,
-      "name": "Bright Motion",
+      "name": "PL - Pulse Tap",
       "category": "Pluck",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -932,11 +1172,16 @@
       "stereoWidth": 0.22,
       "wavetablePosition": 0.62,
       "oscillatorMix": 0.32,
-      "detuneCents": 7
+      "detuneCents": 7,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 6,
+      "subMix": 0,
+      "drive": 0.18,
+      "filterEnvAmount": 0.74
     },
     {
       "id": 50,
-      "name": "Copper Pluck",
+      "name": "PL - Pure Bell",
       "category": "Pluck",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -951,11 +1196,16 @@
       "stereoWidth": 0.18,
       "wavetablePosition": 0.1,
       "oscillatorMix": 0.06,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.45
     },
     {
       "id": 51,
-      "name": "Star Dust",
+      "name": "PL - Copper Snap",
       "category": "Pluck",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -970,11 +1220,16 @@
       "stereoWidth": 0.46,
       "wavetablePosition": 0.34,
       "oscillatorMix": 0.7,
-      "detuneCents": 21
+      "detuneCents": 21,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 9,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.82
     },
     {
       "id": 52,
-      "name": "Pulse Pick",
+      "name": "PL - Wide Pluck",
       "category": "Pluck",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -989,11 +1244,16 @@
       "stereoWidth": 0.36,
       "wavetablePosition": 0.78,
       "oscillatorMix": 0.28,
-      "detuneCents": 5
+      "detuneCents": 5,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 16,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.7
     },
     {
       "id": 53,
-      "name": "Electric Halo",
+      "name": "KY - Soft EP",
       "category": "Keys",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1008,11 +1268,16 @@
       "stereoWidth": 0.38,
       "wavetablePosition": 0.08,
       "oscillatorMix": 0.12,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 5,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.24
     },
     {
       "id": 54,
-      "name": "Midnight Keys",
+      "name": "KY - Digital Piano",
       "category": "Keys",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -1027,11 +1292,16 @@
       "stereoWidth": 0.42,
       "wavetablePosition": 0.18,
       "oscillatorMix": 0.18,
-      "detuneCents": 3
+      "detuneCents": 3,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 7,
+      "subMix": 0,
+      "drive": 0.06,
+      "filterEnvAmount": 0.32
     },
     {
       "id": 55,
-      "name": "Soft Focus",
+      "name": "KY - Warm Electric",
       "category": "Keys",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1046,11 +1316,16 @@
       "stereoWidth": 0.48,
       "wavetablePosition": 0.42,
       "oscillatorMix": 0.34,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 4,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.18
     },
     {
       "id": 56,
-      "name": "Analog Memory",
+      "name": "KY - Bright House",
       "category": "Keys",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1065,11 +1340,16 @@
       "stereoWidth": 0.4,
       "wavetablePosition": 0.56,
       "oscillatorMix": 0.26,
-      "detuneCents": 5
+      "detuneCents": 5,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 10,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.28
     },
     {
       "id": 57,
-      "name": "Glass Piano",
+      "name": "KY - Felt Keys",
       "category": "Keys",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -1084,11 +1364,16 @@
       "stereoWidth": 0.3,
       "wavetablePosition": 0.12,
       "oscillatorMix": 0.08,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 58,
-      "name": "Warm Tape",
+      "name": "KY - Velvet Chord",
       "category": "Keys",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1103,11 +1388,16 @@
       "stereoWidth": 0.46,
       "wavetablePosition": 0.68,
       "oscillatorMix": 0.32,
-      "detuneCents": 7
+      "detuneCents": 7,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 8,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.22
     },
     {
       "id": 59,
-      "name": "Metro Keys",
+      "name": "KY - Glass Key",
       "category": "Keys",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -1122,11 +1412,16 @@
       "stereoWidth": 0.36,
       "wavetablePosition": 0.3,
       "oscillatorMix": 0.22,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 6,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.38
     },
     {
       "id": 60,
-      "name": "Blue Room",
+      "name": "KY - Neon Rhodes",
       "category": "Keys",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -1141,11 +1436,16 @@
       "stereoWidth": 0.52,
       "wavetablePosition": 0.82,
       "oscillatorMix": 0.46,
-      "detuneCents": 12
+      "detuneCents": 12,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 12,
+      "subMix": 0,
+      "drive": 0.16,
+      "filterEnvAmount": 0.26
     },
     {
       "id": 61,
-      "name": "Retro Signal",
+      "name": "KY - Soft Stage",
       "category": "Keys",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1160,11 +1460,16 @@
       "stereoWidth": 0.58,
       "wavetablePosition": 0.46,
       "oscillatorMix": 0.4,
-      "detuneCents": 10
+      "detuneCents": 10,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 7,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.18
     },
     {
       "id": 62,
-      "name": "Velvet EP",
+      "name": "KY - Round Piano",
       "category": "Keys",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1179,11 +1484,16 @@
       "stereoWidth": 0.28,
       "wavetablePosition": 0.06,
       "oscillatorMix": 0.04,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0.08,
+      "drive": 0,
+      "filterEnvAmount": 0.08
     },
     {
       "id": 63,
-      "name": "Dawn Chords",
+      "name": "KY - Pulse Keys",
       "category": "Keys",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1198,11 +1508,16 @@
       "stereoWidth": 0.42,
       "wavetablePosition": 0.92,
       "oscillatorMix": 0.36,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 9,
+      "subMix": 0,
+      "drive": 0.14,
+      "filterEnvAmount": 0.35
     },
     {
       "id": 64,
-      "name": "Silver Key",
+      "name": "KY - Dream Chord",
       "category": "Keys",
       "oscillator": "triangle",
       "wavetable": "Vocal Grain",
@@ -1217,11 +1532,16 @@
       "stereoWidth": 0.34,
       "wavetablePosition": 0.24,
       "oscillatorMix": 0.16,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 13,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.24
     },
     {
       "id": 65,
-      "name": "Dream Keys",
+      "name": "KY - Wide Electric",
       "category": "Keys",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -1236,11 +1556,16 @@
       "stereoWidth": 0.62,
       "wavetablePosition": 0.74,
       "oscillatorMix": 0.52,
-      "detuneCents": 14
+      "detuneCents": 14,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 11,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.3
     },
     {
       "id": 66,
-      "name": "Orbit Sequence",
+      "name": "AR - Trance Runner",
       "category": "Arp",
       "oscillator": "pulse",
       "wavetable": "Basic Shapes",
@@ -1255,11 +1580,16 @@
       "stereoWidth": 0.28,
       "wavetablePosition": 0.08,
       "oscillatorMix": 0.16,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 10,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.48
     },
     {
       "id": 67,
-      "name": "Neon Steps",
+      "name": "AR - Neon Steps",
       "category": "Arp",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1274,11 +1604,16 @@
       "stereoWidth": 0.4,
       "wavetablePosition": 0.28,
       "oscillatorMix": 0.36,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 12,
+      "subMix": 0,
+      "drive": 0.16,
+      "filterEnvAmount": 0.38
     },
     {
       "id": 68,
-      "name": "Clockwork",
+      "name": "AR - Glass Sequence",
       "category": "Arp",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -1293,11 +1628,16 @@
       "stereoWidth": 0.32,
       "wavetablePosition": 0.46,
       "oscillatorMix": 0.14,
-      "detuneCents": 3
+      "detuneCents": 3,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 6,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.32
     },
     {
       "id": 69,
-      "name": "Hyper Motion",
+      "name": "AR - Voltage Grid",
       "category": "Arp",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1312,11 +1652,16 @@
       "stereoWidth": 0.46,
       "wavetablePosition": 0.66,
       "oscillatorMix": 0.48,
-      "detuneCents": 12
+      "detuneCents": 12,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0.2,
+      "filterEnvAmount": 0.55
     },
     {
       "id": 70,
-      "name": "Prism Runner",
+      "name": "AR - Pulse Motion",
       "category": "Arp",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1331,11 +1676,16 @@
       "stereoWidth": 0.3,
       "wavetablePosition": 0.84,
       "oscillatorMix": 0.24,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 9,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.42
     },
     {
       "id": 71,
-      "name": "Binary Dance",
+      "name": "AR - Fast Lane",
       "category": "Arp",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1350,11 +1700,16 @@
       "stereoWidth": 0.52,
       "wavetablePosition": 0.16,
       "oscillatorMix": 0.62,
-      "detuneCents": 19
+      "detuneCents": 19,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 22,
+      "subMix": 0,
+      "drive": 0.28,
+      "filterEnvAmount": 0.5
     },
     {
       "id": 72,
-      "name": "Pulse Ladder",
+      "name": "AR - Soft Clock",
       "category": "Arp",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1369,11 +1724,16 @@
       "stereoWidth": 0.22,
       "wavetablePosition": 0.36,
       "oscillatorMix": 0.1,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 5,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.28
     },
     {
       "id": 73,
-      "name": "Strobe Path",
+      "name": "AR - Digital Orbit",
       "category": "Arp",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -1388,11 +1748,16 @@
       "stereoWidth": 0.44,
       "wavetablePosition": 0.58,
       "oscillatorMix": 0.54,
-      "detuneCents": 15
+      "detuneCents": 15,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 17,
+      "subMix": 0,
+      "drive": 0.18,
+      "filterEnvAmount": 0.46
     },
     {
       "id": 74,
-      "name": "Velocity Grid",
+      "name": "AR - Crystal Pattern",
       "category": "Arp",
       "oscillator": "triangle",
       "wavetable": "Vocal Grain",
@@ -1407,11 +1772,16 @@
       "stereoWidth": 0.36,
       "wavetablePosition": 0.96,
       "oscillatorMix": 0.26,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 11,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.4
     },
     {
       "id": 75,
-      "name": "Future Relay",
+      "name": "AR - Acid Steps",
       "category": "Arp",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1426,11 +1796,16 @@
       "stereoWidth": 0.48,
       "wavetablePosition": 0.72,
       "oscillatorMix": 0.38,
-      "detuneCents": 10
+      "detuneCents": 10,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 14,
+      "subMix": 0,
+      "drive": 0.24,
+      "filterEnvAmount": 0.62
     },
     {
       "id": 76,
-      "name": "Circuit Chase",
+      "name": "AR - Rolling Gate",
       "category": "Arp",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1445,11 +1820,16 @@
       "stereoWidth": 0.34,
       "wavetablePosition": 0.5,
       "oscillatorMix": 0.3,
-      "detuneCents": 7
+      "detuneCents": 7,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 7,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.38
     },
     {
       "id": 77,
-      "name": "Arctic Arp",
+      "name": "AR - Future Relay",
       "category": "Arp",
       "oscillator": "wavetable",
       "wavetable": "Digital Glass",
@@ -1464,11 +1844,16 @@
       "stereoWidth": 0.56,
       "wavetablePosition": 0.9,
       "oscillatorMix": 0.7,
-      "detuneCents": 23
+      "detuneCents": 23,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 20,
+      "subMix": 0,
+      "drive": 0.22,
+      "filterEnvAmount": 0.48
     },
     {
       "id": 78,
-      "name": "Impact Portal",
+      "name": "FX - Sub Impact",
       "category": "FX",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1483,11 +1868,16 @@
       "stereoWidth": 0.12,
       "wavetablePosition": 0.02,
       "oscillatorMix": 0.04,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 1,
+      "unisonDetuneCents": 0,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.05
     },
     {
       "id": 79,
-      "name": "Riser Machine",
+      "name": "FX - Rising Lift",
       "category": "FX",
       "oscillator": "wavetable",
       "wavetable": "Harmonic Sweep",
@@ -1502,11 +1892,16 @@
       "stereoWidth": 0.64,
       "wavetablePosition": 0.94,
       "oscillatorMix": 0.46,
-      "detuneCents": 17
+      "detuneCents": 17,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 20,
+      "subMix": 0,
+      "drive": 0.2,
+      "filterEnvAmount": 0.42
     },
     {
       "id": 80,
-      "name": "Falling Stars",
+      "name": "FX - Falling Stars",
       "category": "FX",
       "oscillator": "saw",
       "wavetable": "Digital Glass",
@@ -1521,11 +1916,16 @@
       "stereoWidth": 0.48,
       "wavetablePosition": 0.72,
       "oscillatorMix": 0.62,
-      "detuneCents": 20
+      "detuneCents": 20,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 25,
+      "subMix": 0,
+      "drive": 0.18,
+      "filterEnvAmount": 0.28
     },
     {
       "id": 81,
-      "name": "Deep Sweep",
+      "name": "FX - Acid Sweep",
       "category": "FX",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1540,11 +1940,16 @@
       "stereoWidth": 0.16,
       "wavetablePosition": 0.38,
       "oscillatorMix": 0.18,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 8,
+      "subMix": 0,
+      "drive": 0.45,
+      "filterEnvAmount": 0.72
     },
     {
       "id": 82,
-      "name": "Metal Bloom",
+      "name": "FX - Metallic Bloom",
       "category": "FX",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1559,11 +1964,16 @@
       "stereoWidth": 0.72,
       "wavetablePosition": 0.84,
       "oscillatorMix": 0.74,
-      "detuneCents": 24
+      "detuneCents": 24,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 32,
+      "subMix": 0,
+      "drive": 0.36,
+      "filterEnvAmount": 0.34
     },
     {
       "id": 83,
-      "name": "Cosmic Hit",
+      "name": "FX - Laser Hit",
       "category": "FX",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -1578,11 +1988,16 @@
       "stereoWidth": 0.1,
       "wavetablePosition": 0.1,
       "oscillatorMix": 0.06,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 9,
+      "subMix": 0,
+      "drive": 0.22,
+      "filterEnvAmount": 0.18
     },
     {
       "id": 84,
-      "name": "Signal Break",
+      "name": "FX - Dark Riser",
       "category": "FX",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1597,11 +2012,16 @@
       "stereoWidth": 0.58,
       "wavetablePosition": 0.64,
       "oscillatorMix": 0.52,
-      "detuneCents": 14
+      "detuneCents": 14,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 22,
+      "subMix": 0,
+      "drive": 0.3,
+      "filterEnvAmount": 0.64
     },
     {
       "id": 85,
-      "name": "Reverse World",
+      "name": "FX - Reverse Pull",
       "category": "FX",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -1616,11 +2036,16 @@
       "stereoWidth": 0.2,
       "wavetablePosition": 0.22,
       "oscillatorMix": 0.12,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 5,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.45
     },
     {
       "id": 86,
-      "name": "Laser Storm",
+      "name": "FX - Wide Transition",
       "category": "FX",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1635,11 +2060,16 @@
       "stereoWidth": 0.82,
       "wavetablePosition": 0.98,
       "oscillatorMix": 0.66,
-      "detuneCents": 22
+      "detuneCents": 22,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 34,
+      "subMix": 0,
+      "drive": 0.28,
+      "filterEnvAmount": 0.4
     },
     {
       "id": 87,
-      "name": "Atmos Drop",
+      "name": "FX - Noise Burst",
       "category": "FX",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1654,11 +2084,16 @@
       "stereoWidth": 0.24,
       "wavetablePosition": 0.46,
       "oscillatorMix": 0.3,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 2,
+      "unisonDetuneCents": 10,
+      "subMix": 0,
+      "drive": 0.48,
+      "filterEnvAmount": 0.72
     },
     {
       "id": 88,
-      "name": "Gravity Shift",
+      "name": "FX - Cosmic Impact",
       "category": "FX",
       "oscillator": "saw",
       "wavetable": "Digital Glass",
@@ -1673,11 +2108,16 @@
       "stereoWidth": 0.54,
       "wavetablePosition": 0.58,
       "oscillatorMix": 0.58,
-      "detuneCents": 16
+      "detuneCents": 16,
+      "unisonVoices": 3,
+      "unisonDetuneCents": 14,
+      "subMix": 0,
+      "drive": 0.32,
+      "filterEnvAmount": 0.26
     },
     {
       "id": 89,
-      "name": "Digital Thunder",
+      "name": "FX - Signal Fall",
       "category": "FX",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1692,11 +2132,16 @@
       "stereoWidth": 0.18,
       "wavetablePosition": 0.14,
       "oscillatorMix": 0.08,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0.24,
+      "filterEnvAmount": 0.52
     },
     {
       "id": 90,
-      "name": "Silent Planet",
+      "name": "AM - Silent Planet",
       "category": "Ambient",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1711,11 +2156,16 @@
       "stereoWidth": 0.92,
       "wavetablePosition": 0.08,
       "oscillatorMix": 0.16,
-      "detuneCents": 2
+      "detuneCents": 2,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 24,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.05
     },
     {
       "id": 91,
-      "name": "Afterglow",
+      "name": "AM - Afterglow",
       "category": "Ambient",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -1730,11 +2180,16 @@
       "stereoWidth": 0.94,
       "wavetablePosition": 0.24,
       "oscillatorMix": 0.28,
-      "detuneCents": 6
+      "detuneCents": 6,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 28,
+      "subMix": 0,
+      "drive": 0.02,
+      "filterEnvAmount": 0.08
     },
     {
       "id": 92,
-      "name": "Ocean Memory",
+      "name": "AM - Ocean Memory",
       "category": "Ambient",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1749,11 +2204,16 @@
       "stereoWidth": 0.9,
       "wavetablePosition": 0.52,
       "oscillatorMix": 0.48,
-      "detuneCents": 13
+      "detuneCents": 13,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 32,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.1
     },
     {
       "id": 93,
-      "name": "Far Horizon",
+      "name": "AM - Far Horizon",
       "category": "Ambient",
       "oscillator": "sine",
       "wavetable": "Digital Glass",
@@ -1768,11 +2228,16 @@
       "stereoWidth": 0.98,
       "wavetablePosition": 0.14,
       "oscillatorMix": 0.1,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 18,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.04
     },
     {
       "id": 94,
-      "name": "Blue Silence",
+      "name": "AM - Blue Silence",
       "category": "Ambient",
       "oscillator": "saw",
       "wavetable": "Harmonic Sweep",
@@ -1787,11 +2252,16 @@
       "stereoWidth": 0.86,
       "wavetablePosition": 0.68,
       "oscillatorMix": 0.54,
-      "detuneCents": 17
+      "detuneCents": 17,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 34,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 95,
-      "name": "Soft Gravity",
+      "name": "AM - Soft Gravity",
       "category": "Ambient",
       "oscillator": "triangle",
       "wavetable": "Basic Shapes",
@@ -1806,11 +2276,16 @@
       "stereoWidth": 0.96,
       "wavetablePosition": 0.36,
       "oscillatorMix": 0.32,
-      "detuneCents": 8
+      "detuneCents": 8,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 26,
+      "subMix": 0,
+      "drive": 0.08,
+      "filterEnvAmount": 0.08
     },
     {
       "id": 96,
-      "name": "Distant Lights",
+      "name": "AM - Distant Lights",
       "category": "Ambient",
       "oscillator": "wavetable",
       "wavetable": "Vocal Grain",
@@ -1825,11 +2300,16 @@
       "stereoWidth": 0.88,
       "wavetablePosition": 0.82,
       "oscillatorMix": 0.62,
-      "detuneCents": 20
+      "detuneCents": 20,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 36,
+      "subMix": 0,
+      "drive": 0.04,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 97,
-      "name": "Night Air",
+      "name": "AM - Night Air",
       "category": "Ambient",
       "oscillator": "sine",
       "wavetable": "Basic Shapes",
@@ -1844,11 +2324,16 @@
       "stereoWidth": 0.94,
       "wavetablePosition": 0.02,
       "oscillatorMix": 0.06,
-      "detuneCents": 0
+      "detuneCents": 0,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 20,
+      "subMix": 0,
+      "drive": 0,
+      "filterEnvAmount": 0.02
     },
     {
       "id": 98,
-      "name": "Slow Motion",
+      "name": "AM - Slow Motion",
       "category": "Ambient",
       "oscillator": "pulse",
       "wavetable": "Formant",
@@ -1863,11 +2348,16 @@
       "stereoWidth": 0.84,
       "wavetablePosition": 0.6,
       "oscillatorMix": 0.38,
-      "detuneCents": 11
+      "detuneCents": 11,
+      "unisonVoices": 5,
+      "unisonDetuneCents": 30,
+      "subMix": 0,
+      "drive": 0.12,
+      "filterEnvAmount": 0.12
     },
     {
       "id": 99,
-      "name": "Hidden Valley",
+      "name": "AM - Hidden Valley",
       "category": "Ambient",
       "oscillator": "wavetable",
       "wavetable": "Harmonic Sweep",
@@ -1882,11 +2372,16 @@
       "stereoWidth": 0.98,
       "wavetablePosition": 0.96,
       "oscillatorMix": 0.72,
-      "detuneCents": 24
+      "detuneCents": 24,
+      "unisonVoices": 6,
+      "unisonDetuneCents": 38,
+      "subMix": 0,
+      "drive": 0.1,
+      "filterEnvAmount": 0.16
     },
     {
       "id": 100,
-      "name": "Calm Machine",
+      "name": "AM - Calm Machine",
       "category": "Ambient",
       "oscillator": "triangle",
       "wavetable": "Digital Glass",
@@ -1901,7 +2396,12 @@
       "stereoWidth": 0.92,
       "wavetablePosition": 0.42,
       "oscillatorMix": 0.2,
-      "detuneCents": 4
+      "detuneCents": 4,
+      "unisonVoices": 4,
+      "unisonDetuneCents": 22,
+      "subMix": 0,
+      "drive": 0.06,
+      "filterEnvAmount": 0.08
     }
   ]
 }
