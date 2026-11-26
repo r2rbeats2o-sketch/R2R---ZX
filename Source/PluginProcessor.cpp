@@ -13,6 +13,7 @@ public:
         shRange = raw ("SH_RANGE"); portamento = raw ("PORTAMENTO");
         attack = raw ("ATTACK"); decay = raw ("DECAY"); sustain = raw ("SUSTAIN"); release = raw ("RELEASE");
         oscType = raw ("OSC_TYPE"); cutoff = raw ("CUTOFF"); resonance = raw ("RESONANCE"); width = raw ("WIDTH");
+        wtPosition = raw ("WT_POS"); oscMix = raw ("OSC_MIX"); detune = raw ("DETUNE");
     }
 
     bool canPlaySound (juce::SynthesiserSound* sound) override { return sound != nullptr; }
@@ -29,7 +30,7 @@ public:
         ampEnv.setSampleRate (getSampleRate()); ampEnv.setParameters (ep); ampEnv.noteOn();
         pitchEnv.setSampleRate (getSampleRate()); pitchEnv.setParameters (ep); pitchEnv.noteOn();
         shCounter = 0; shValue = random.nextFloat() * 2.0f - 1.0f;
-        phase = 0.0; ic1eq = ic2eq = 0.0f; active = true;
+        phase = phaseB = 0.0; ic1eq = ic2eq = 0.0f; active = true;
     }
     void stopNote (float, bool allowTailOff) override
     {
@@ -77,17 +78,33 @@ public:
             }
             const float cents = glideSeconds > 0.0001 ? shValue * shRange->load() * modEnv : 0.0f;
             const double hz = currentHz * std::pow (2.0, (cents + pitchWheelSemitones * 100.0f + modWheel * shValue * shRange->load() * 0.25f) / 1200.0);
-            const double inc = juce::MathConstants<double>::twoPi * hz / sr;
-            phase += inc;
+            const float detuneCents = detune->load();
+            const double incA = juce::MathConstants<double>::twoPi * hz / sr;
+            const double incB = juce::MathConstants<double>::twoPi * hz * std::pow (2.0, detuneCents / 1200.0) / sr;
+            phase += incA; phaseB += incB;
             if (phase >= juce::MathConstants<double>::twoPi) phase -= juce::MathConstants<double>::twoPi;
-            const float ph = (float) (phase / juce::MathConstants<double>::twoPi);
-            float sample = 0.0f;
+            if (phaseB >= juce::MathConstants<double>::twoPi) phaseB -= juce::MathConstants<double>::twoPi;
             const int shape = (int) oscType->load();
-            if (shape == 0) sample = std::sin ((float) phase);
-            else if (shape == 1) sample = 2.0f * ph - 1.0f;
-            else if (shape == 2) sample = ph < 0.5f ? 1.0f : -1.0f;
-            else if (shape == 3) sample = 1.0f - 4.0f * std::abs (ph - 0.5f);
-            else sample = 0.62f * std::sin ((float) phase) + 0.25f * std::sin ((float) phase * 2.0f) + 0.13f * std::sin ((float) phase * 3.0f);
+            const float position = wtPosition->load();
+            auto tableSample = [&] (double phs, float pos)
+            {
+                const float ph = (float) (phs / juce::MathConstants<double>::twoPi);
+                const float sine = std::sin ((float) phs);
+                const float saw = 2.0f * ph - 1.0f;
+                const float pulse = ph < 0.5f ? 1.0f : -1.0f;
+                const float tri = 1.0f - 4.0f * std::abs (ph - 0.5f);
+                const float digital = 0.62f * sine + 0.25f * std::sin ((float) phs * 2.0f) + 0.13f * std::sin ((float) phs * 3.0f);
+                const float frames[5] = { sine, saw, pulse, tri, digital };
+                const float frame = juce::jlimit (0.0f, 4.0f, pos * 4.0f);
+                const int a = (int) frame, b = juce::jmin (4, a + 1);
+                const float blend = frame - (float) a;
+                const float scanned = frames[a] + (frames[b] - frames[a]) * blend;
+                return shape == 0 ? scanned : (shape == 1 ? saw : shape == 2 ? pulse : shape == 3 ? tri : digital);
+            };
+            const float sampleA = tableSample (phase, position);
+            const float sampleB = tableSample (phaseB, juce::jlimit (0.0f, 1.0f, position + 0.18f));
+            const float mix = juce::jlimit (0.0f, 1.0f, oscMix->load());
+            float sample = sampleA * (1.0f - mix) + sampleB * mix;
 
             const float fc = juce::jlimit (30.0f, (float) (sr * 0.45), cutoff->load());
             const float g = std::tan (juce::MathConstants<float>::pi * fc / (float) sr);
@@ -111,9 +128,10 @@ private:
     std::atomic<float>* shRange{}; std::atomic<float>* portamento{};
     std::atomic<float>* attack{}; std::atomic<float>* decay{}; std::atomic<float>* sustain{}; std::atomic<float>* release{};
     std::atomic<float>* oscType{}; std::atomic<float>* cutoff{}; std::atomic<float>* resonance{}; std::atomic<float>* width{};
+    std::atomic<float>* wtPosition{}; std::atomic<float>* oscMix{}; std::atomic<float>* detune{};
     juce::ADSR ampEnv, pitchEnv;
     juce::Random random;
-    double phase = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
+    double phase = 0.0, phaseB = 0.0, currentHz = 0.0, targetHz = 440.0, glideStep = 0.0, glideSeconds = 0.0;
     float level = 0.0f, shValue = 0.0f, ic1eq = 0.0f, ic2eq = 0.0f;
     float pitchWheelSemitones = 0.0f, modWheel = 0.0f;
     int shCounter = 0;
@@ -141,6 +159,9 @@ R2RZXAudioProcessor::APVTS::ParameterLayout R2RZXAudioProcessor::createParameter
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("CUTOFF", "Cutoff", juce::NormalisableRange<float> (30.0f, 18000.0f, 1.0f, 0.35f), 12000.0f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("RESONANCE", "Resonance", juce::NormalisableRange<float> (0.0f, 1.0f), 0.2f));
     p.push_back (std::make_unique<juce::AudioParameterFloat> ("WIDTH", "Stereo Width", juce::NormalisableRange<float> (0.0f, 1.0f), 0.5f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("WT_POS", "Wavetable Position", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("OSC_MIX", "Oscillator B Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.35f));
+    p.push_back (std::make_unique<juce::AudioParameterFloat> ("DETUNE", "Oscillator B Detune", juce::NormalisableRange<float> (0.0f, 30.0f), 7.0f));
     return { p.begin(), p.end() };
 }
 
