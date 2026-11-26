@@ -6,6 +6,7 @@ class R2RZXLookAndFeel final : public juce::LookAndFeel_V4
 {
 public:
     void drawRotarySlider (juce::Graphics&, int, int, int, int, float, float, float, juce::Slider&) override;
+    void drawComboBox (juce::Graphics&, int, int, bool, int, int, int, int, juce::ComboBox&) override;
 };
 
 class R2RZXAudioProcessorEditor final : public juce::AudioProcessorEditor
