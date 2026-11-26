@@ -67,6 +67,9 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     setupSlider (cutoff, "CUTOFF");
     setupSlider (resonance, "RESONANCE");
     setupSlider (width, "STEREO WIDTH");
+    setupSlider (wtPosition, "WT POSITION");
+    setupSlider (oscMix, "OSC B MIX");
+    setupSlider (detune, "B DETUNE");
 
     auto& state = processor.parameters;
     rangeAttachment = std::make_unique<SliderAttachment> (state, "SH_RANGE", range);
@@ -78,6 +81,9 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     cutoffAttachment = std::make_unique<SliderAttachment> (state, "CUTOFF", cutoff);
     resonanceAttachment = std::make_unique<SliderAttachment> (state, "RESONANCE", resonance);
     widthAttachment = std::make_unique<SliderAttachment> (state, "WIDTH", width);
+    wtPositionAttachment = std::make_unique<SliderAttachment> (state, "WT_POS", wtPosition);
+    oscMixAttachment = std::make_unique<SliderAttachment> (state, "OSC_MIX", oscMix);
+    detuneAttachment = std::make_unique<SliderAttachment> (state, "DETUNE", detune);
     oscillatorAttachment = std::make_unique<ComboAttachment> (state, "OSC_TYPE", oscillatorBox);
 }
 
@@ -136,6 +142,9 @@ void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
     };
     knobLabel ("S&H RANGE", 50, 250, 142);
     knobLabel ("PORTAMENTO", 208, 250, 142);
+    knobLabel ("WT POSITION", 42, 420, 94);
+    knobLabel ("OSC B MIX", 128, 420, 94);
+    knobLabel ("B DETUNE", 214, 420, 94);
     knobLabel ("CUTOFF", 394, 250, 142);
     knobLabel ("RESONANCE", 562, 250, 142);
     knobLabel ("STEREO SPREAD", 478, 408, 142);
@@ -167,6 +176,9 @@ void R2RZXAudioProcessorEditor::resized()
     const int knobW = 142, knobH = 145;
     range.setBounds (panel1x + 10, top, knobW, knobH);
     portamento.setBounds (panel1x + 168, top, knobW, knobH);
+    wtPosition.setBounds (panel1x + 4, top + 158, 94, 126);
+    oscMix.setBounds (panel1x + 90, top + 158, 94, 126);
+    detune.setBounds (panel1x + 176, top + 158, 94, 126);
 
     cutoff.setBounds (panel2x + 8, top, knobW, knobH);
     resonance.setBounds (panel2x + 176, top, knobW, knobH);
