@@ -287,6 +287,11 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     setupSlider (wtPosition, "WT POSITION");
     setupSlider (oscMix, "OSC B MIX");
     setupSlider (detune, "B DETUNE");
+    setupSlider (unison, "UNISON VOICES");
+    setupSlider (unisonDetune, "UNI DETUNE");
+    setupSlider (subMix, "SUB LEVEL");
+    setupSlider (drive, "DRIVE");
+    setupSlider (filterEnv, "FILTER ENV");
 
     auto& state = processor.parameters;
     rangeAttachment = std::make_unique<SliderAttachment> (state, "SH_RANGE", range);
@@ -303,12 +308,23 @@ R2RZXAudioProcessorEditor::R2RZXAudioProcessorEditor (R2RZXAudioProcessor& p)
     detuneAttachment = std::make_unique<SliderAttachment> (state, "DETUNE", detune);
     oscillatorAttachment = std::make_unique<ComboAttachment> (state, "OSC_TYPE", oscillatorBox);
     wavetableAttachment = std::make_unique<ComboAttachment> (state, "WT_BANK", wavetableBox);
+    unisonAttachment = std::make_unique<SliderAttachment> (state, "UNISON", unison);
+    unisonDetuneAttachment = std::make_unique<SliderAttachment> (state, "UNI_DETUNE", unisonDetune);
+    subMixAttachment = std::make_unique<SliderAttachment> (state, "SUB_MIX", subMix);
+    driveAttachment = std::make_unique<SliderAttachment> (state, "DRIVE", drive);
+    filterEnvAttachment = std::make_unique<SliderAttachment> (state, "FILTER_ENV", filterEnv);
+    unison.setNumDecimalPlacesToDisplay (0);
 
     auto repaintOnEdit = [this] { repaint(); };
     wtPosition.onValueChange = repaintOnEdit;
     wavetableBox.onChange = repaintOnEdit;
     oscMix.onValueChange = repaintOnEdit;
     detune.onValueChange = repaintOnEdit;
+    unison.onValueChange = repaintOnEdit;
+    unisonDetune.onValueChange = repaintOnEdit;
+    subMix.onValueChange = repaintOnEdit;
+    drive.onValueChange = repaintOnEdit;
+    filterEnv.onValueChange = repaintOnEdit;
     cutoff.onValueChange = repaintOnEdit;
     resonance.onValueChange = repaintOnEdit;
     width.onValueChange = repaintOnEdit;
@@ -393,19 +409,24 @@ void R2RZXAudioProcessorEditor::paint (juce::Graphics& g)
         g.drawText (text, (int) x, (int) y, (int) w, 15, juce::Justification::centred);
     };
 
-    const float oscKnobW = juce::jmin (116.0f, (leftW - 58.0f) / 3.0f);
-    label ("WT POSITION", margin + 20.0f, topY + 151.0f, oscKnobW);
-    label ("OSC B MIX", margin + leftW * 0.5f - oscKnobW * 0.5f, topY + 151.0f, oscKnobW);
-    label ("B DETUNE", margin + leftW - oscKnobW - 20.0f, topY + 151.0f, oscKnobW);
+    const float oscCell = (leftW - 32.0f) / 7.0f;
+    label ("WT POS", margin + 8.0f + oscCell * 0.0f, topY + 153.0f, oscCell);
+    label ("OSC B MIX", margin + 8.0f + oscCell * 1.0f, topY + 153.0f, oscCell);
+    label ("B DETUNE", margin + 8.0f + oscCell * 2.0f, topY + 153.0f, oscCell);
+    label ("UNISON", margin + 8.0f + oscCell * 3.0f, topY + 153.0f, oscCell);
+    label ("UNI DETUNE", margin + 8.0f + oscCell * 4.0f, topY + 153.0f, oscCell);
+    label ("SUB", margin + 8.0f + oscCell * 5.0f, topY + 153.0f, oscCell);
+    label ("DRIVE", margin + 8.0f + oscCell * 6.0f, topY + 153.0f, oscCell);
 
     const float voiceKnobW = juce::jmin (138.0f, (rightW - 42.0f) * 0.5f);
     label ("S&H RANGE", rightX + 12.0f, topY + 84.0f, voiceKnobW);
     label ("PORTAMENTO", rightX + rightW - voiceKnobW - 12.0f, topY + 84.0f, voiceKnobW);
 
-    const float filterKnobW = juce::jmin (124.0f, (filterW - 28.0f) / 3.0f);
-    label ("CUTOFF", margin + 8.0f, bottomY + 47.0f, filterKnobW);
-    label ("RESONANCE", margin + filterW * 0.5f - filterKnobW * 0.5f, bottomY + 47.0f, filterKnobW);
-    label ("STEREO WIDTH", margin + filterW - filterKnobW - 8.0f, bottomY + 47.0f, filterKnobW);
+    const float filterCell = (filterW - 24.0f) / 4.0f;
+    label ("CUTOFF", margin + 6.0f + filterCell * 0.0f, bottomY + 47.0f, filterCell);
+    label ("RESONANCE", margin + 6.0f + filterCell * 1.0f, bottomY + 47.0f, filterCell);
+    label ("STEREO WIDTH", margin + 6.0f + filterCell * 2.0f, bottomY + 47.0f, filterCell);
+    label ("FILTER ENV", margin + 6.0f + filterCell * 3.0f, bottomY + 47.0f, filterCell);
 
     const float envKnobW = juce::jmin (146.0f, (envW - 52.0f) / 4.0f);
     const float envGap = (envW - envKnobW * 4.0f) / 5.0f;
@@ -442,11 +463,17 @@ void R2RZXAudioProcessorEditor::resized()
     wavetableLabel.setBounds (755, 108, 210, 18);
     wavetableBox.setBounds (755, 130, 210, 38);
 
-    const float oscKnobW = juce::jmin (116.0f, (leftW - 58.0f) / 3.0f);
-    const float oscY = topY + 165.0f;
-    wtPosition.setBounds ((int) (margin + 20.0f + (oscKnobW - 108.0f) * 0.5f), (int) oscY, 108, 112);
-    oscMix.setBounds ((int) (margin + leftW * 0.5f - 54.0f), (int) oscY, 108, 112);
-    detune.setBounds ((int) (margin + leftW - oscKnobW - 20.0f + (oscKnobW - 108.0f) * 0.5f), (int) oscY, 108, 112);
+    const float oscCell = (leftW - 32.0f) / 7.0f;
+    const float oscY = topY + 166.0f;
+    const int oscControlW = (int) (oscCell - 4.0f);
+    const int oscControlH = 108;
+    wtPosition.setBounds ((int) (margin + 8.0f + oscCell * 0.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    oscMix.setBounds ((int) (margin + 8.0f + oscCell * 1.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    detune.setBounds ((int) (margin + 8.0f + oscCell * 2.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    unison.setBounds ((int) (margin + 8.0f + oscCell * 3.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    unisonDetune.setBounds ((int) (margin + 8.0f + oscCell * 4.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    subMix.setBounds ((int) (margin + 8.0f + oscCell * 5.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
+    drive.setBounds ((int) (margin + 8.0f + oscCell * 6.0f + 2.0f), (int) oscY, oscControlW, oscControlH);
 
     const float voiceW = juce::jmin (138.0f, (rightW - 42.0f) * 0.5f);
     const float voiceY = topY + 108.0f;
@@ -454,12 +481,14 @@ void R2RZXAudioProcessorEditor::resized()
     portamento.setBounds ((int) (rightX + rightW - voiceW - 12.0f + (voiceW - 122.0f) * 0.5f), (int) voiceY, 122, 154);
 
     const float bottomH = (float) getHeight() - bottomY - 24.0f;
-    const float filterKnobW = juce::jmin (124.0f, (filterW - 28.0f) / 3.0f);
+    const float filterCell = (filterW - 24.0f) / 4.0f;
     const float filterY = bottomY + 69.0f;
-    const float filterSliderW = juce::jmin (118.0f, filterKnobW);
-    cutoff.setBounds ((int) (margin + 8.0f + (filterKnobW - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, (int) juce::jmin (158.0f, bottomH - 76.0f));
-    resonance.setBounds ((int) (margin + filterW * 0.5f - filterSliderW * 0.5f), (int) filterY, (int) filterSliderW, (int) juce::jmin (158.0f, bottomH - 76.0f));
-    width.setBounds ((int) (margin + filterW - filterKnobW - 8.0f + (filterKnobW - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, (int) juce::jmin (158.0f, bottomH - 76.0f));
+    const float filterSliderW = juce::jmin (104.0f, filterCell - 4.0f);
+    const int filterH = (int) juce::jmin (158.0f, bottomH - 76.0f);
+    cutoff.setBounds ((int) (margin + 6.0f + filterCell * 0.0f + (filterCell - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, filterH);
+    resonance.setBounds ((int) (margin + 6.0f + filterCell * 1.0f + (filterCell - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, filterH);
+    width.setBounds ((int) (margin + 6.0f + filterCell * 2.0f + (filterCell - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, filterH);
+    filterEnv.setBounds ((int) (margin + 6.0f + filterCell * 3.0f + (filterCell - filterSliderW) * 0.5f), (int) filterY, (int) filterSliderW, filterH);
 
     const float envKnobW = juce::jmin (146.0f, (envW - 52.0f) / 4.0f);
     const float envGap = (envW - envKnobW * 4.0f) / 5.0f;
