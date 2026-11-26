@@ -166,7 +166,7 @@ void R2RZXLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int wi
                              cy - std::cos (angle) * diameter * 0.12f);
     pointer.lineTo (tipX, tipY);
     g.setColour (juce::Colour (0xfff8dfe2));
-    g.strokePath (pointer, juce::PathStrokeType (3.2f, juce::PathStrokeType::rounded));
+    g.strokePath (pointer, juce::PathStrokeType (3.2f));
     g.setColour (red);
     g.fillEllipse (tipX - 2.0f, tipY - 2.0f, 4.0f, 4.0f);
     g.setColour (juce::Colours::white.withAlpha (0.07f));
